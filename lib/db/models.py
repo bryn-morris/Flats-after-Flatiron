@@ -10,8 +10,6 @@ from sqlalchemy.orm import relationship, backref, sessionmaker
 Base = declarative_base()
 Engine = create_engine("sqlite:///project.db")
 
-
-
 class Traveler(Base):
     
     __tablename__ = 'Travelers'
@@ -22,6 +20,11 @@ class Traveler(Base):
     last_name = Column(String())
     location = Column(String())
 
+    def __repr__(self):
+        return f"id = {self.id}," \
+                + f"name = {self.first_name} {self.last_name}," \
+                + f"location = {self.location}"
+    
 class Domicile(Base):
     
     __tablename__ = 'Domiciles'
@@ -39,6 +42,13 @@ class Domicile(Base):
     
     # Avaliabilty as a method?
 
+    def __repr__(self):
+        return f"id = {self.id}," \
+            + f"dest_location = {self.dest_location}," \
+            + f"sleep_capacity = {self.sleep_capacity}," \
+            + f"local_amenities = {self.local_amenities}," \
+            + f"property_type = {self.property_type}"
+
 class Vacation(Base):
     
     __tablename__ = 'Vacations'
@@ -50,9 +60,14 @@ class Vacation(Base):
     Traveler_id = Column(Integer(),ForeignKey('Travelers.id', name = "t-id_constraint"))
     Domicile_id = Column(Integer(),ForeignKey('Domiciles.id', name = "d-id constraint"))
 
-    # traveler = relationship('Travelers', backref=backref("traveler"))
-    # lodging = relationship('Domicile', backref=backref("lodging"))
+    traveler = relationship('Travelers', backref=backref("travelers"))
+    lodging = relationship('Domicile', backref=backref("lodgings"))
 
-# Base.metadata.create_all(bind=Engine)
+    def __repr__(self):
+        return f"id = {self.id}," \
+            + f"start_date = {self.start_date}" \
+            + f"end_date = {self.end_date}" \
+            + f"Traveler_id = {self.Traveler_id}" \
+            + f"Domicile_id = {self.Domicile_id}"
 
 
