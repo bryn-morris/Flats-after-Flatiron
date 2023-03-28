@@ -23,7 +23,7 @@ class CLI():
         self.first_name = user_fn
         self.last_name = user_ln
         self.city = user_city
-        self.traveler()
+        self.traveler 
         self.start()
 
     def traveler(self):
@@ -35,7 +35,7 @@ class CLI():
         session.add(new_traveler)
         print('test')
         session.commit()
-        self._traveler = new_traveler
+        self.trav_obj = new_traveler
     
     def start(self):
         print('')
