@@ -78,7 +78,7 @@ class CLI():
             print(f"Sleeping Capacity: {dp.sleep_capacity}")
             print(f"Local Amenities: {dp.local_amenities}")
 
-            viewPastBookings = input('Would you like to see the past bookings of this property? (y/n):')
+            viewPastBookings = input('Would you like to see the past bookings of this property? (y/n): ')
 
             if viewPastBookings == 'Y' or viewPastBookings == 'y':
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
