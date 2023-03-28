@@ -19,22 +19,28 @@ class CLI():
 
     vacations = session.query(Vacation).all()
 
-    def __init__(self, user_fn, user_ln, user_city):
+    def __init__(self, user_fn, user_ln, user_city, traveler = None):
         self.first_name = user_fn
         self.last_name = user_ln
         self.city = user_city
+        self.travler = traveler
         self.start()
 
     @property
     def traveler(self):
+        return self._traveler
+    
+    @traveler.setter
+    def traveler(self, x):
         for t in CLI.travelers:
             if t.first_name == self.first_name and t.last_name == self.last_name:
-                return t
+                self._traveler = t
             
         new_traveler = Traveler(self.first_name, self.last_name, self.city)
         session.add(new_traveler)
+        print('test')
         session.commit()
-        return new_traveler
+        self._traveler = new_traveler
     
     def start(self):
         print('')
@@ -59,7 +65,8 @@ class CLI():
             print(' ')
             if user_input == "Y" or user_input == 'y':
                 exit = True
-          
+
+     
     def browse(self):
         print('')
         print('** Properties **')
