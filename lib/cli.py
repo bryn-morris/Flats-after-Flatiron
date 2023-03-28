@@ -19,19 +19,14 @@ class CLI():
 
     vacations = session.query(Vacation).all()
 
-    def __init__(self, user_fn, user_ln, user_city, traveler = None):
+    def __init__(self, user_fn, user_ln, user_city):
         self.first_name = user_fn
         self.last_name = user_ln
         self.city = user_city
-        self.travler = traveler
+        self.traveler()
         self.start()
 
-    @property
     def traveler(self):
-        return self._traveler
-    
-    @traveler.setter
-    def traveler(self, x):
         for t in CLI.travelers:
             if t.first_name == self.first_name and t.last_name == self.last_name:
                 self._traveler = t

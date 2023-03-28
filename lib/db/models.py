@@ -18,6 +18,11 @@ class Traveler(Base):
     last_name = Column(String())
     location = Column(String())
 
+    def __init__(self, user_fn, user_ln, user_city):
+        self.first_name = user_fn
+        self.last_name = user_ln
+        self.location = user_city
+
     def __repr__(self):
         return f"id = {self.id}," \
                 + f"name = {self.first_name} {self.last_name}," \
@@ -38,6 +43,12 @@ class Domicile(Base):
     # price = Column(Integer())
     property_type = Column(String())
     
+    def __init__(self, dest_location, sleep_capacity, local_amenities, property_type):
+        self.dest_location = dest_location
+        self.sleep_capacity = sleep_capacity
+        self.local_amenities = local_amenities
+        self.property_type = property_type
+
     # Avaliabilty as a method?
 
     def __repr__(self):
@@ -60,6 +71,13 @@ class Vacation(Base):
 
     traveler = relationship('Traveler', backref=backref("traveler"))
     lodging = relationship('Domicile', backref=backref("lodging"))
+
+    def __init__(self, start_date, end_date, Traveler_id, Domicile_id):
+        self.start_date = start_date
+        self.end_date = end_date
+        self.Traveler_id = Traveler_id
+        self.Domicile_id = Domicile_id
+
 
     def __repr__(self):
         return f"id = {self.id}," \
