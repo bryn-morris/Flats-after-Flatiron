@@ -68,6 +68,6 @@ class Vacation(Base):
             + f"Traveler_id = {self.Traveler_id}" \
             + f"Domicile_id = {self.Domicile_id}"
     
-if __name__ == "main":
-    Engine = create_engine("sqlite:///project.db")
+if __name__ == "__main__":
+    Engine = create_engine("sqlite:///lib/db/project.db")
     Base.metadata.create_all(Engine)

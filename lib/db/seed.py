@@ -6,7 +6,7 @@ import random
 from datetime import date
 
 if __name__ == '__main__':
-    engine = create_engine('sqlite:///project.db')
+    engine = create_engine('sqlite:///lib/db/project.db')
     Session = sessionmaker(bind=engine)
     session = Session()
 
