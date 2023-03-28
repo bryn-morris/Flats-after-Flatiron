@@ -2,7 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Vacation,Domicile,Traveler
 from faker import Faker
-from random import random
+import random
+from datetime import date
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///project.db')
@@ -92,18 +93,18 @@ if __name__ == '__main__':
 
     # Creating Vacation Instances
 
-    sample_vacation_dates = [{"ed": "6-7-2018",
-                            "sd": "5-20-2018", 
-                            },{"ed": "9-16-2022",
-                            "sd": "9-14-2022", 
-                            },{"ed": "2-3-2022",
-                            "sd": "12-2-2022", 
-                            },{"ed": "5-16-2020",
-                            "sd": "5-3-2020", 
-                            },{"ed": "8-19-2021",
-                            "sd":"8-1-2021"},
-                            {"ed": "6-12-2022",
-                            "sd":"6-3-2022"},
+    sample_vacation_dates = [{"ed": date.fromisoformat("2018-06-07"),
+                            "sd": date.fromisoformat("2018-05-20"), 
+                            },{"ed": date.fromisoformat("2022-09-16"),
+                            "sd": date.fromisoformat("2022-09-14"), 
+                            },{"ed": date.fromisoformat("2022-02-03"),
+                            "sd": date.fromisoformat("2022-12-02"), 
+                            },{"ed": date.fromisoformat("2020-05-16"),
+                            "sd": date.fromisoformat("2020-05-03"), 
+                            },{"ed": date.fromisoformat("2021-08-19"),
+                            "sd":date.fromisoformat("2021-08-01")},
+                            {"ed": date.fromisoformat("2022-06-12"),
+                            "sd":date.fromisoformat("2022-06-03")},
                             ]
     
     for dateset in sample_vacation_dates:
