@@ -68,6 +68,8 @@ if __name__ == '__main__':
 
         random_property = random.choice(sample_properties)
 
+# Need to update Amenties into list that is randomly generated
+
         sample_domiciles.append({"dest_location": faker.city(),
                          "sleep_capacity": random_property["sc"], 
                          "local_amenities": "SAMPLE",

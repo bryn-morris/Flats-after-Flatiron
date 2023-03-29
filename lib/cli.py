@@ -13,10 +13,8 @@ session = Session()
 class CLI():
     
     domiciles = session.query(Domicile).all()
-    # what does this return?
 
     travelers = [traveler for traveler in session.query(Traveler)]
-    # what does this format return?
 
     vacations = session.query(Vacation).all()
 
@@ -71,6 +69,7 @@ class CLI():
         for i, d in enumerate(CLI.domiciles):
             print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
 
+        print("")
         detailPropID = input('If you would like to see the details of a property please enter the number of the property in the list: ')
 
         if int(detailPropID) in range(1, len(CLI.domiciles) + 1):
@@ -82,6 +81,8 @@ class CLI():
             print(f"Local Amenities: {dp.local_amenities}")
 
             viewPastBookings = input('Would you like to see the past bookings of this property? (y/n): ')
+
+# Need to make view past booking more readable, maybe print string with name and dates
 
             if viewPastBookings.lower() == 'y':
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
@@ -95,6 +96,8 @@ class CLI():
         while True:
             try:
                 start_date = input("When would you like your vacation to start? ")
+# We need to provide an example of the date input format or make it so how the
+# user formats their date doesnt matter
                 startDate = datetime.datetime.strptime(start_date, date_format).date()
                 print(f"Here is your start date: {startDate}")
             except:
@@ -194,19 +197,52 @@ class CLI():
 
             print('')
 # add logic to make sure updated dates are in the correct range
+# can't exit once in enter date screen
+# add end date addition functionality
             if update_action.lower() == 'u':
                 edit_prop = input("Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
                 date_format = '%Y-%m-%d'
                 if edit_prop == '1':
                     while True:
                         try:
+                            vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.start_date.desc())
+                            print("")
+                            print("This location currently has other reservations during: ")
+                            print("")
+                            for v in vac_by_cvd:
+                                if v == cv:
+                                    print(f"***{v.start_date} to {v.end_date}***")
+                                else:
+                                    print(f"{v.start_date} to {v.end_date}")
+                            print("")    
                             new_start_date = input("Please enter your new start date: ")
                             newStartDate = datetime.datetime.strptime(new_start_date, date_format).date()
-                            print(f"Here is your new start date: {newStartDate}")
-                            cv.start_date = newStartDate
-                            session.commit()
+
+                            difference_dict = {}
+                            for date in [v.end_date for v in vac_by_cvd]:
+                                difference_dict[date] = (date-newStartDate).days
+
+                            copy_diff_dict = difference_dict.copy()
+
+                            print(f" Here is the difference dict: {difference_dict}")
+                            
+                            for key, value in copy_diff_dict.items():
+                                
+                                if value >= 0:
+                                    del difference_dict[key]
+                                    print(difference_dict)
+                            
+                            closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
+
+                            if closest_end_date < newStartDate < cv.end_date:
+                                print(f"Here is your new start date: {newStartDate}")
+                                cv.start_date = newStartDate
+                                session.commit()
+                            else:
+                                raise ValueError
                         except:
-                            print('Please enter a valid date!')
+                            print('PLEASE ENTER A VALID DATE!')
+                            print("")
                             continue
                         else:
                             break
@@ -219,7 +255,7 @@ class CLI():
                             cv.end_date = newEndDate
                             session.commit()
                         except:
-                            print('Please enter a valid date!')
+                            print('PLEASE ENTER A VALID DATE!')
                             continue
                         else:
                             break
@@ -271,6 +307,8 @@ if __name__ == '__main__':
     user_ln = input("Enter Your Last Name: ")
     user_city = input("Enter Your City Name: ")
     CLI(user_fn, user_ln, user_city)
+#Ask user reason for vacation, and display in the past bookings in browse
+# ie. Work Retreat, Family Vacation, Honeymoon... etc etc
 
 
 ipdb.set_trace()
