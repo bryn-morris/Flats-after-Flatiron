@@ -91,20 +91,28 @@ class CLI():
     def book(self):
 # add loop functionality to continue prompting for dates
         date_format = '%Y-%m-%d'
-        start_date = input("When would you like your vacation to start? ")
-        try:
-            startDate = datetime.datetime.strptime(start_date, date_format).date()
-            print(f"Here is your start date: {startDate}")
-        except ValueError:
-            print('Please enter a valid date!')
 
-        end_date = input("When would you like your vacation to end? ")
-
-        try:
-            endDate = datetime.datetime.strptime(end_date, date_format).date()
-            print(f"Here is your end date: {endDate}")
-        except ValueError:
-            print('Please enter a valid date!')
+        while True:
+            try:
+                start_date = input("When would you like your vacation to start? ")
+                startDate = datetime.datetime.strptime(start_date, date_format).date()
+                print(f"Here is your start date: {startDate}")
+            except:
+                print('Please enter a valid date!')
+                continue
+            else:
+                break
+        
+        while True:
+            try:
+                end_date = input("When would you like your vacation to end? ")
+                endDate = datetime.datetime.strptime(end_date, date_format).date()
+                print(f"Here is your end date: {endDate}")
+            except:
+                print('Please enter a valid date!')
+                continue
+            else:
+                break
 
         filtered_domiciles = []
         for d in CLI.domiciles:
