@@ -86,8 +86,20 @@ class CLI():
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
                 for v in pastVacations:
                     print(v)
-            
+        
+    def book(self):
 
+        
+
+        start_date = input("When would you like your vacation to start?")
+        print(f"Here is your start date: {start_date}")
+        end_date = input("When would you like your vacation to end?")
+        print(f"Here is your end date: {end_date}")
+
+        # filtered_domiciles = (d for d in CLI.domiciles if )
+
+        for i, d in enumerate(CLI.domiciles):
+            pass
 
 if __name__ == '__main__':
     

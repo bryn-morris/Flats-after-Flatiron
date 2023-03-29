@@ -28,6 +28,9 @@ class Traveler(Base):
                 + f"name = {self.first_name} {self.last_name}," \
                 + f"location = {self.location}"
     
+    domicile = relationship('Domicile', secondary='Vacations', back_populates='traveler')
+    
+
 class Domicile(Base):
     
     __tablename__ = 'Domiciles'
@@ -58,6 +61,8 @@ class Domicile(Base):
             + f"local_amenities = {self.local_amenities}," \
             + f"property_type = {self.property_type}"
 
+    traveler = relationship('Traveler', secondary='Vacations', back_populates='domicile')
+
 class Vacation(Base):
     
     __tablename__ = 'Vacations'
@@ -69,8 +74,8 @@ class Vacation(Base):
     Traveler_id = Column(Integer(),ForeignKey('Travelers.id', name = "t-id_constraint"))
     Domicile_id = Column(Integer(),ForeignKey('Domiciles.id', name = "d-id constraint"))
 
-    traveler = relationship('Traveler', backref=backref("traveler"))
-    lodging = relationship('Domicile', backref=backref("lodging"))
+    # traveler = relationship('Traveler', backref=backref("traveler"))
+    # lodging = relationship('Domicile', backref=backref("lodging"))
 
     def __init__(self, start_date, end_date, Traveler_id, Domicile_id):
         self.start_date = start_date
