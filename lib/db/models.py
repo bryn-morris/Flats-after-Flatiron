@@ -19,10 +19,10 @@ class Traveler(Base):
     last_name = Column(String())
     location = Column(String())
 
-    def __init__(self, user_fn, user_ln, user_city):
-        self.first_name = user_fn
-        self.last_name = user_ln
-        self.location = user_city
+    def __init__(self, first_name, last_name, location):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.location = location
 
     def __repr__(self):
         return f"id = {self.id}," \
