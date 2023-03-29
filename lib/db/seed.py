@@ -98,7 +98,7 @@ if __name__ == '__main__':
     k=0
     while k <= 15:
         sample_vacation_dates.append(str(faker.date_between_dates(date_start=datetime(2021,1,1), date_end=datetime(2024,12,31)))) 
-
+        k += 1
 
     # sample_vacation_dates = [{"ed": date.fromisoformat("2018-06-07"),
     #                         "sd": date.fromisoformat("2018-05-20"), 
@@ -123,7 +123,6 @@ if __name__ == '__main__':
             Domicile_id = random.choice(created_domiciles).id
         )
         
-
         session.add(newVacation)
         session.commit()
 
