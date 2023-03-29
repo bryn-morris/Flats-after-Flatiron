@@ -52,7 +52,7 @@ class CLI():
             if choice.lower() == 'b':
                 self.book()
             elif choice.lower() == 'v':
-                pass
+                self.view_update()
             elif choice.lower() == 'n':
                 self.browse()
 
@@ -149,6 +149,40 @@ class CLI():
                 session.commit()
                 print('Congrats! Your vacation is booked!')
 
+
+    def view_update(self):
+        print(' ')
+        print(" **My Vacations** ")
+        print(' ')
+
+        my_vacations = [v for v in self.trav_obj.vacations]
+
+        if len(my_vacations) > 0:
+            for i, v in enumerate(my_vacations):
+                print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+        else:
+            print("No vacations booked yet!")
+
+        print('')
+
+        chosen_vaca = input("Type the number of the vacation you'd like to edit/delete ")
+
+        print('')
+
+        if int(chosen_vaca) in range(1, len(my_vacations) + 1):
+            cv = my_vacations[int(chosen_vaca) - 1]
+            print(f"Vacation: {cv.domicile.property_type}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}" )
+
+        print('')
+
+        update_action = input("To update this vacation, type 'U', to delete this vacation, type 'D': ")
+
+        print('')
+
+        if update_action.lower == 'u':
+            pass 
+        elif update_action.lower == 'd': 
+            session.delete(cv)
 
 if __name__ == '__main__':
     
