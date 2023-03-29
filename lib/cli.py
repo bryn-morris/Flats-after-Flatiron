@@ -46,7 +46,7 @@ class CLI():
         exit = False
 
         while exit == False:
-            choice = input("What would you like to do? Type 'B' to book a vacation, Type 'V' to view/update your Vacations, or Type 'N' to browse all properties: ")
+            choice = input("What would you like to do? Type 'B' to book a vacation, Type 'V' to view your profile, or Type 'N' to browse all properties: ")
             print('')
 
             if choice.lower() == 'b':
@@ -59,7 +59,7 @@ class CLI():
             print(' ')
             user_input = input("Would you like to stop now? (Type Y/N): ")
             print(' ')
-            if user_input == "Y" or user_input == 'y':
+            if user_input.lower() == 'y':
                 exit = True
 
      
@@ -83,7 +83,7 @@ class CLI():
 
             viewPastBookings = input('Would you like to see the past bookings of this property? (y/n): ')
 
-            if viewPastBookings == 'Y' or viewPastBookings == 'y':
+            if viewPastBookings.lower() == 'y':
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
                 for v in pastVacations:
                     print(v)
@@ -144,7 +144,7 @@ class CLI():
             book_prop = input('Would you like to book this property(y/n)? ')
 # Add functionality if user says no (return to domicile list)
 # Add functionality to kick user back to main menu
-            if book_prop == 'y' or book_prop == 'Y':
+            if book_prop.lower() == 'y':
                 session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id))
                 session.commit()
                 print('Congrats! Your vacation is booked!')
@@ -152,10 +152,18 @@ class CLI():
 
     def view_update(self):
         print(' ')
-        print(" **My Vacations** ")
+        print(" **My Profile** ")
         print(' ')
 
+        print(f'First Name: {self.trav_obj.first_name}')
+        print(f'Last Name: {self.trav_obj.last_name}')
+        print(f'Location: {self.trav_obj.location}')
+
+        print('')
+
         my_vacations = [v for v in self.trav_obj.vacations]
+
+        print('Your vacations:')
 
         if len(my_vacations) > 0:
             for i, v in enumerate(my_vacations):
@@ -165,24 +173,90 @@ class CLI():
 
         print('')
 
-        chosen_vaca = input("Type the number of the vacation you'd like to edit/delete ")
+# only ask this prompt if user has vacations
+        edit = input('Would you like to edit your vacations(y/n)? ')
 
-        print('')
+        if edit.lower() == 'y':
+            chosen_vaca = input("Type the number of the vacation you'd like to edit/delete ")
 
-        if int(chosen_vaca) in range(1, len(my_vacations) + 1):
-            cv = my_vacations[int(chosen_vaca) - 1]
-            print(f"Vacation: {cv.domicile.property_type}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}" )
+            print('')
 
-        print('')
+            if int(chosen_vaca) in range(1, len(my_vacations) + 1):
+                cv = my_vacations[int(chosen_vaca) - 1]
+                print(f"Currently Editing Vacation: {cv.domicile.property_type}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}" )
 
-        update_action = input("To update this vacation, type 'U', to delete this vacation, type 'D': ")
+                print('')
 
-        print('')
+                update_action = input("To update this vacation, type 'U', to delete this vacation, type 'D': ")
 
-        if update_action.lower == 'u':
-            pass 
-        elif update_action.lower == 'd': 
-            session.delete(cv)
+                print('')
+# add logic to make sure updated dates are in the correct range
+                if update_action.lower() == 'u':
+                    edit_prop = input("Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
+                    date_format = '%Y-%m-%d'
+                    if edit_prop == '1':
+                        while True:
+                            try:
+                                new_start_date = input("Please enter your new start date: ")
+                                newStartDate = datetime.datetime.strptime(new_start_date, date_format).date()
+                                print(f"Here is your new start date: {newStartDate}")
+                                cv.start_date = newStartDate
+                                session.commit()
+                            except:
+                                print('Please enter a valid date!')
+                                continue
+                            else:
+                                break
+                    elif edit_prop == '2':
+                        while True:
+                            try:
+                                new_end_date = input("Please enter your new end date: ")
+                                newEndDate = datetime.datetime.strptime(new_end_date, date_format).date()
+                                print(f"Here is your new end date: {newEndDate}")
+                                cv.end_date = newEndDate
+                                session.commit()
+                            except:
+                                print('Please enter a valid date!')
+                                continue
+                            else:
+                                break
+                    elif edit_prop == '3':
+                        available_domiciles = []
+                        for d in CLI.domiciles:
+                            vcount = 0
+                            for v in d.vacations:
+                                if (cv.start_date < v.start_date):
+                                    if (cv.end_date < v.start_date):
+                                        vcount += 1
+                                elif (cv.end_date > v.end_date):
+                                    if(cv.start_date > v.end_date):
+                                        vcount += 1
+                            if vcount == len(d.vacations):
+                                available_domiciles.append(d)
+                        
+                        print("Available Properties:")
+                        for i, d in enumerate(available_domiciles):
+                            print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+                        
+                        print('')
+                        new_dom = input("Please enter the number of the property you would like to switch to: ")
+                        
+                        if int(new_dom) in range(1, len(available_domiciles)+1):
+                            new_property = available_domiciles[int(new_dom)-1]
+                            cv.Domicile_id = new_property.id
+                            session.commit()
+                            
+                elif update_action.lower() == 'd': 
+                    session.delete(cv)
+                    session.commit()
+                    print('Vacation deleted successfully!')
+                    print('Your vacations:')
+                    new_vacations = [v for v in self.trav_obj.vacations]
+                    if len(new_vacations) > 0:
+                        for i, v in enumerate(new_vacations):
+                            print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+                    else:
+                        print("No vacations booked yet!")
 
 if __name__ == '__main__':
     
