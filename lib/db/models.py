@@ -1,4 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import create_engine
 from sqlalchemy import (PrimaryKeyConstraint, Column, String, Integer, Date, ForeignKey)
 from sqlalchemy.orm import relationship, backref, sessionmaker
@@ -28,8 +29,10 @@ class Traveler(Base):
                 + f"name = {self.first_name} {self.last_name}," \
                 + f"location = {self.location}"
     
-    domicile = relationship('Domicile', secondary='Vacations', back_populates='traveler')
-    
+    #Avoiding using Table
+    vacations = relationship("Vacation", backref = "traveler")
+    domiciles = association_proxy("vacations", "domicile",
+                                  creator = lambda dm: Vacation(domicile = dm))
 
 class Domicile(Base):
     
@@ -60,8 +63,12 @@ class Domicile(Base):
             + f"sleep_capacity = {self.sleep_capacity}," \
             + f"local_amenities = {self.local_amenities}," \
             + f"property_type = {self.property_type}"
+    
+    #Avoiding using Table
+    vacations = relationship("Vacation", backref = "domicile")
+    travelers = association_proxy("vacations", "traveler",
+                                  creator = lambda tr: Vacation(traveler = tr))
 
-    traveler = relationship('Traveler', secondary='Vacations', back_populates='domicile')
 
 class Vacation(Base):
     
@@ -71,18 +78,14 @@ class Vacation(Base):
     id = Column(Integer(), primary_key = True)
     start_date = Column(Date())
     end_date = Column(Date())
-    Traveler_id = Column(Integer(),ForeignKey('Travelers.id', name = "t-id_constraint"))
-    Domicile_id = Column(Integer(),ForeignKey('Domiciles.id', name = "d-id constraint"))
-
-    # traveler = relationship('Traveler', backref=backref("traveler"))
-    # lodging = relationship('Domicile', backref=backref("lodging"))
+    Traveler_id = Column(Integer(),ForeignKey('Travelers.id'))
+    Domicile_id = Column(Integer(),ForeignKey('Domiciles.id'))
 
     def __init__(self, start_date, end_date, Traveler_id, Domicile_id):
         self.start_date = start_date
         self.end_date = end_date
         self.Traveler_id = Traveler_id
         self.Domicile_id = Domicile_id
-
 
     def __repr__(self):
         return f"id = {self.id}," \

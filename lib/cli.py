@@ -89,8 +89,6 @@ class CLI():
         
     def book(self):
 
-        
-
         start_date = input("When would you like your vacation to start?")
         print(f"Here is your start date: {start_date}")
         end_date = input("When would you like your vacation to end?")
