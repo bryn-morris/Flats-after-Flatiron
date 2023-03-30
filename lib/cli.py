@@ -57,7 +57,10 @@ class CLI():
             print(' ')
             user_input = input("Would you like to stop now? (Type Y/N): ")
             print(' ')
+            
             if user_input.lower() == 'y':
+                print('GoodBye!')
+                print(' ')
                 exit = True
 
      
@@ -84,21 +87,48 @@ class CLI():
 
 
             print(' ')
+            print("><><><><><><><><><><><><><><><><><")
             print("Here are some past residents!")
+            print("><><><><><><><><><><><><><><><><><")
             print(' ')
             history_count = 0
             if viewPastBookings.lower() == 'y':
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
                 for v in pastVacations:
-                    print(f"{history_count}. {v.traveler.first_name} {v.traveler.last_name}")
-                    print(f"   Reason for visit: {v.rsn_for_visit}")
-                    history_count += 1
+                    try:
+                        print("--------------------------------------------------------------")
+                        print(f"{history_count}. {v.traveler.first_name} {v.traveler.last_name}")
+                        print(f"   Reason for visit: {v.rsn_for_visit}")
+                        history_count += 1
+                    except:
+                        pass
+                    finally:
+                        print("--------------------------------------------------------------")
         
     def book(self):
         date_format = '%Y-%m-%d'
 
+        # accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
+
+        
+
         while True:
             try:
+            #     usersd= input("When would you like your vacation to start?")
+            #     for date_format in accepted_date_formats:
+            #         try:
+            #             start_date = datetime.strptime(usersd, accepted_date_formats).strftime('%Y-%m-%d')
+            #         except ValueError:
+            #             pass
+            #         else:
+            #             break
+            #     print(f"Here is your start date: {start_date}")
+            # except:
+            #     print('Please enter a valid date! (year-month-day)')
+            #     continue
+            # else:
+            #     break
+
                 start_date = input("When would you like your vacation to start? (year-month-day) ")
 # We need to provide an example of the date input format or make it so how the
 # user formats their date doesnt matter
@@ -109,7 +139,7 @@ class CLI():
                 continue
             else:
                 break
-        
+# Need to add logic so end date CANNOT be after start date without raising the except condition
         while True:
             try:
                 end_date = input("When would you like your vacation to end? (year-month-day) ")
