@@ -6,16 +6,36 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import datetime
 import os
+import time
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Session = sessionmaker(bind=engine)
 session = Session()
+
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
 
 class CLI():
     
     domiciles = session.query(Domicile).all()
 
     travelers = [traveler for traveler in session.query(Traveler)]
+    
+    lower_trav = []
+
+    for traveler in travelers:
+        traveler.first_name = traveler.first_name.lower()
+        traveler.last_name = traveler.last_name.lower()
+        lower_trav.append(traveler)
 
     vacations = session.query(Vacation).all()
 
@@ -48,7 +68,9 @@ class CLI():
         print('')
         print('')
         print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
-        print(f'             ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
+        print(f'             ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
+              if self.trav_obj.first_name.lower() not in [trav.first_name for trav in CLI.lower_trav] and self.trav_obj.last_name.lower() not in [trav.last_name for trav in CLI.lower_trav] 
+              else f'             ><><><><><><><><><><><><>    WELCOME BACK TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
         print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
         print('')
         print('')
@@ -93,25 +115,39 @@ class CLI():
     def browse(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         print('')
-        print("><><><><><><><><><><><><><><><><><")
-        print('><><><>    Properties    ><><><><>')
-        print("><><><><><><><><><><><><><><><><><")
+        print("             ><><><><><><><><><><><><><><><><><")
+        print('             ><><><>    Properties    ><><><><>')
+        print("             ><><><><><><><><><><><><><><><><><")
         print(' ')
 
         for i, d in enumerate(CLI.domiciles):
-            print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
-            print(".......................")
+            try:
+                print("································································")
+                print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+            except:
+                pass
+            finally:
+                print("································································")
 
         print("")
         detailPropID = input('If you would like to see the details of a property please enter the number of the property in the list: ')
 
         if int(detailPropID) in range(1, len(CLI.domiciles) + 1):
+            os.system('cls' if os.name == 'nt' else 'clear')
+                
             dp = CLI.domiciles[int(detailPropID) - 1]
+            print(' ')
             print('** Property Details **')
+            print(' ')
+            print("································································")
             print(f"Property Type: {dp.property_type}")
+            print("································································")
             print(f"Location: {dp.dest_location}")
+            print("································································")
             print(f"Sleeping Capacity: {dp.sleep_capacity}")
+            print("································································")
             print(f"Local Amenities: {dp.local_amenities}")
+            print("································································")
 
             viewPastBookings = input('Would you like to see the past bookings of this property? (y/n): ')
 
@@ -214,7 +250,7 @@ class CLI():
 
         if int(propID) in range(1, len(filtered_domiciles)+1):
             dp = filtered_domiciles[int(propID) - 1]
-            print('** Property Details **')
+            print("\033[1m" + '** Property Details **' + "\033[0m")
             print(f"Property Type: {dp.property_type}")
             print(f"Location: {dp.dest_location}")
             print(f"Sleeping Capacity: {dp.sleep_capacity}")
@@ -373,8 +409,15 @@ class CLI():
                     
                     print("Available Properties:")
                     for i, d in enumerate(available_domiciles):
-                        print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
-                    
+                        for i, v in enumerate(new_vacations):
+                            try:
+                                print("--------------------------------------------------------------")
+                                print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+                            except:
+                                pass
+                            finally:
+                                print("--------------------------------------------------------------")
+                        
                     print('')
                     new_dom = input("Please enter the number of the property you would like to switch to: ")
                     
@@ -395,14 +438,84 @@ class CLI():
                 new_vacations = [v for v in self.trav_obj.vacations]
                 if len(new_vacations) > 0:
                     for i, v in enumerate(new_vacations):
-                        print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+                        try:
+                            print("--------------------------------------------------------------")
+                            print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+                        except:
+                            pass
+                        finally:
+                            print("--------------------------------------------------------------")
                 else:
                     print("No vacations booked yet!")
 
 if __name__ == '__main__':
-    
-    user_fn = input("Enter Your First Name: ")
-    user_ln = input("Enter Your Last Name: ")
-    user_city = input("Enter Your City Name: ")
-    CLI(user_fn, user_ln, user_city)
+    login_counter = 0
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("")
+        print("")
+        print("")
+        print("")
+        print("")
+        print("")
+        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><")
+        print("><><><><><><><><>                        <><><><><><><><><><><><")
+        print("><><><><><><><><>  FLATS AFTER FLATIRON  <><><><><><><><><><><><")
+        print("><><><><><><><><>                        <><><><><><><><><><><><")
+        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><")
+        print("")
+        print("")
+        print("")
+        print("")
+        print("-----------------------------------------------------------------")
+        print("")
+        print("                   Press Enter to get Started")
+        print("                        or C to exit         ")
+        print("")
+        print("-----------------------------------------------------------------")
+        
+        user_input = input()
+        if user_input == "":
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("")
+            print("")
+            print("-----------------------------------------------")
+            user_fn = input("Enter Your First Name: ")
+            user_ln = input("Enter Your Last Name: ")
+            user_city = input("Enter Your City Name: ")
+            print("-----------------------------------------------")
+            time.sleep(1)
+            print("")
+            print("")
+            CLI(user_fn, user_ln, user_city)
+        elif(user_input.lower() == "c"):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print(' ')
+            print("><><><><><><><><><><><><><><><><><")
+            print("><><><><><><><><><><><><><><><><><")
+            print(' ')
+            print('><><><><><>< GoodBye! <><><><><><>')
+            print(' ')
+            print("><><><><><><><><><><><><><><><><><")
+            print("><><><><><><><><><><><><><><><><><")
+            print(' ')
+            break
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("")
+            print("")
+            print("                         ヽ(ಠ_ಠ)ノ"
+                  if login_counter == 0 else
+                   "                      ( ͠° ͟ʖ ͡° )")
+            print("")
+            print("")
+            print("Press Enter Please! This is an exercise in following directions..."
+             if login_counter == 0 else 
+             "This REALLY isn't that hard...press" + color.BOLD +  " E.N.T.E.R" + color.END + "..." )
+            print("")
+            print("")
+            print("")
+            time.sleep(4)
+            login_counter = 1
+            continue
 
