@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy import create_engine
 from sqlalchemy import (PrimaryKeyConstraint, Column, String, Integer, Date, ForeignKey)
-from sqlalchemy.orm import relationship, backref, sessionmaker
+from sqlalchemy.orm import relationship, backref
 
 # Choose from list of options  - user input
 

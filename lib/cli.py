@@ -89,7 +89,7 @@ class CLI():
 
 
                                                                        
-                                                         {welcome_images[0]}
+                                                         {random.choice(welcome_images)}
                                                        
 
                                                            What would you like to do?
