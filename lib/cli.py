@@ -82,37 +82,41 @@ class CLI():
 
             viewPastBookings = input('Would you like to see the past bookings of this property? (y/n): ')
 
-# Need to make view past booking more readable, maybe print string with name and dates
 
+            print(' ')
+            print("Here are some past residents!")
+            print(' ')
+            history_count = 0
             if viewPastBookings.lower() == 'y':
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
                 for v in pastVacations:
-                    print(v)
+                    print(f"{history_count}. {v.traveler.first_name} {v.traveler.last_name}")
+                    print(f"     Reason for visit: {v.rsn_for_visit}")
+                    history_count += 1
         
     def book(self):
-# add loop functionality to continue prompting for dates
         date_format = '%Y-%m-%d'
 
         while True:
             try:
-                start_date = input("When would you like your vacation to start? ")
+                start_date = input("When would you like your vacation to start? (year-month-day) ")
 # We need to provide an example of the date input format or make it so how the
 # user formats their date doesnt matter
                 startDate = datetime.datetime.strptime(start_date, date_format).date()
                 print(f"Here is your start date: {startDate}")
             except:
-                print('Please enter a valid date!')
+                print('Please enter a valid date! (year-month-day)')
                 continue
             else:
                 break
         
         while True:
             try:
-                end_date = input("When would you like your vacation to end? ")
+                end_date = input("When would you like your vacation to end? (year-month-day) ")
                 endDate = datetime.datetime.strptime(end_date, date_format).date()
                 print(f"Here is your end date: {endDate}")
             except:
-                print('Please enter a valid date!')
+                print('Please enter a valid date! (year-month-day)')
                 continue
             else:
                 break
@@ -148,7 +152,10 @@ class CLI():
 # Add functionality if user says no (return to domicile list)
 # Add functionality to kick user back to main menu
             if book_prop.lower() == 'y':
-                session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id))
+                print('Great! We support electronic sign in.')
+                rsn_response = input('What is the reason for your visit? ')
+
+                session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id, rsn_response))
                 session.commit()
                 print('Congrats! Your vacation is booked!')
 
@@ -307,8 +314,4 @@ if __name__ == '__main__':
     user_ln = input("Enter Your Last Name: ")
     user_city = input("Enter Your City Name: ")
     CLI(user_fn, user_ln, user_city)
-#Ask user reason for vacation, and display in the past bookings in browse
-# ie. Work Retreat, Family Vacation, Honeymoon... etc etc
 
-
-ipdb.set_trace()

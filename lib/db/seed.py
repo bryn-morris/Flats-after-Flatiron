@@ -115,6 +115,15 @@ if __name__ == '__main__':
     #                         {"ed": date.fromisoformat("2022-06-12"),
     #                         "sd":date.fromisoformat("2022-06-03")},
     #                         ]
+
+    reason_table = [
+        "Running from the spider in my room : (",
+        "Family Vacation!",
+        "Business Trip, on the company's dime",
+        "I'm not sure, I just woke up here!",
+        "I'm just here for the bug convention",
+        "Ghosts"
+        ]
     
     for dateset in sample_vacation_dates:
 
@@ -122,7 +131,8 @@ if __name__ == '__main__':
             start_date = date.fromisoformat(dateset),
             end_date = date.fromisoformat(dateset)+timedelta(days=random.choice(range(2,40))),
             Traveler_id = random.choice(created_travelers).id,
-            Domicile_id = random.choice(created_domiciles).id
+            Domicile_id = random.choice(created_domiciles).id,
+            rsn_for_visit = random.choice(reason_table)
         )
         
         session.add(newVacation)

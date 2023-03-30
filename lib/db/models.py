@@ -80,19 +80,22 @@ class Vacation(Base):
     end_date = Column(Date())
     Traveler_id = Column(Integer(),ForeignKey('Travelers.id'))
     Domicile_id = Column(Integer(),ForeignKey('Domiciles.id'))
+    rsn_for_visit = Column(String())
 
-    def __init__(self, start_date, end_date, Traveler_id, Domicile_id):
+    def __init__(self, start_date, end_date, Traveler_id, Domicile_id, rsn_for_visit=""):
         self.start_date = start_date
         self.end_date = end_date
         self.Traveler_id = Traveler_id
         self.Domicile_id = Domicile_id
+        self.rsn_for_visit = rsn_for_visit
 
     def __repr__(self):
         return f"id = {self.id}," \
             + f"start_date = {self.start_date}" \
             + f"end_date = {self.end_date}" \
             + f"Traveler_id = {self.Traveler_id}" \
-            + f"Domicile_id = {self.Domicile_id}"
+            + f"Domicile_id = {self.Domicile_id}" \
+            + f"rsn_for_visit = {self.rsn_for_visit}"
     
 if __name__ == "__main__":
     Engine = create_engine("sqlite:///lib/db/project.db")
