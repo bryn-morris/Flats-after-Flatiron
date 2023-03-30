@@ -139,7 +139,7 @@ class CLI():
         for i, d in enumerate(CLI.domiciles):
             try:
                 print("                                      ································································")
-                print(f'                                            {i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+                print(f'                                            {i + 1}. Property Name: {d.name}, Location: {d.dest_location}')
             except:
                 pass
             finally:
@@ -167,7 +167,8 @@ class CLI():
         ·····························································································································     
             
         
-        
+                                    ··································································
+                                      Property Name: {dp.name}
                                     ··································································
                                       Property Type: {dp.property_type}
                                     ··································································
@@ -288,7 +289,7 @@ class CLI():
         print("><><><><><><><><><><><><><><><><><")
         print('Here are the available domiciles: ')
         for i, d in enumerate(filtered_domiciles):
-            print(f'{i + 1}. {d.property_type} in {d.dest_location}')
+            print(f'{i + 1}. {d.name} in {d.dest_location}')
         print("><><><><><><><><><><><><><><><><><")
         print('')
 
@@ -366,7 +367,7 @@ class CLI():
 
         if len(my_vacations) > 0:
             for i, v in enumerate(my_vacations):
-                print(f"                              {i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+                print(f"                              {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
         else:
             print(''')
 
@@ -395,7 +396,7 @@ class CLI():
             print(f'''                     
                                         ><><><><><><><><><><><><><><><><><
 
-                    Currently Editing Vacation: {cv.domicile.property_type}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}
+                    Currently Editing Vacation: {cv.domicile.name}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}
                                                 
                                                 ''')
 
@@ -539,12 +540,12 @@ class CLI():
                     for i, d in enumerate(available_domiciles):
                         for i, v in enumerate(new_vacations):
                             try:
-                                print("                                --------------------------------------------------------------")
-                                print(f'                                {i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+                                print("                                --------------------------------------------------------------------------")
+                                print(f'                                {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}')
                             except:
                                 pass
                             finally:
-                                print("                                --------------------------------------------------------------")
+                                print("                                --------------------------------------------------------------------------")
                         
                     print('')
                     new_dom = input("                                Please enter the number of the property you would like to switch to: ")
@@ -556,7 +557,7 @@ class CLI():
                         cv.Domicile_id = new_property.id
                         session.commit()
 
-                        print(f"                                Congrats! Property changed from {dom_pre_change[0].property_type} in {dom_pre_change[0].dest_location} to {new_property.property_type} in {new_property.dest_location}")
+                        print(f"                                Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}")
                         
             elif update_action.lower() == 'd': 
                 session.delete(cv)
@@ -567,12 +568,12 @@ class CLI():
                 if len(new_vacations) > 0:
                     for i, v in enumerate(new_vacations):
                         try:
-                            print("                                --------------------------------------------------------------")
-                            print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+                            print("                                --------------------------------------------------------------------------")
+                            print(f"                                {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
                         except:
                             pass
                         finally:
-                            print("                                --------------------------------------------------------------")
+                            print("                                --------------------------------------------------------------------------")
                 else:
                     print("No vacations booked yet!")
 

@@ -51,23 +51,25 @@ if __name__ == '__main__':
     random_boat = ["S.S. Venture", "Jenny", "The Inferno", "The Black Pearl", "The Pequod", "The Spinacher",  "The Titanic"]
     random_barrel = ["The Cask of Amontillado", "A Plastic Drum", "The Splintery Barrel", "A High-Density Polyethylene Barrel", "A Whiskey Barrel", "The Drunken Keg"]
     random_castle = ["Dracula Castle", "Castle Black", "Castle Blanca", "The Dark Tower", "Hogwarts", "Elsa's Ice Palace"]
-    random_cottage = ["Grandma's Cottage", ]
+    random_cottage = ["Grandma's Cottage", "Thoreau's Cabin", "The Gingerbread House", "The Folly", "Pemberly Cottage", "Briar Rose Cottage" ]
     random_yurt = ["A Mongolian Ger", "A Tibetan Yurt", "A Kyrgyz Yurt", "A Kazakh Yurt"]
     random_bunker = ["10 Cloverfield Lane", "The War Room", "Area 51 Bunker", "The Burlington Bunker", "Whitehouse Bunker", "Greenbrier Bunker", "The Hive"]
-    random_spaceshuttle = []
-    random_beachhouse = ["Grace's Beach House", "Island Escape" ]
+    random_spaceshuttle = ["The Enterprise", "Discovery", "Atlantis", "Millenium Falcon", "Serenity", "Challenger"]
+    random_beachhouse = ["Grace's Beach House", "Island Escape", "Windward Cottage", "Pelican House", "Coral Cottage", "Blue Bungalow" ]
     
     
     #if there's time, we can add sample amenities to be tied to each sample property
     # could we extrapolate these random lists into a table?
 
     sample_properties = [{"sc": random.randint(2,6),
-                         "p_type": "Beach House", 
+                         "p_type": "Beach House",
+                         "name": random.choice(random_beachhouse) 
                          },{"sc": random.randint(1,4),
                          "p_type": "Bunker", 
                          "name": random.choice(random_bunker)
                          },{"sc": random.randint(1,2),
-                         "p_type": "Space Shuttle", 
+                         "p_type": "Space Shuttle",
+                         "name": random.choice(random_spaceshuttle) 
                          },{"sc": random.randint(4,8),
                          "p_type": "Boat",
                          "name" : random.choice(random_boat)
@@ -78,7 +80,8 @@ if __name__ == '__main__':
                          "p_type": "Castle",
                          "name": random.choice(random_castle) 
                          },{"sc": random.randint(2,5),
-                         "p_type": "Cottage", 
+                         "p_type": "Cottage",
+                         "name": random.choice(random_cottage) 
                          },{"sc": random.randint(1,2),
                          "p_type": "Yurt",
                          "name": random.choice(random_yurt) 
@@ -91,7 +94,6 @@ if __name__ == '__main__':
                          } 
                         ]
    
-
     amenities_list= (
                     "There is a kitchen somewhere around here...",
                     "Waterpark but it's filled with snakes",
@@ -103,7 +105,6 @@ if __name__ == '__main__':
                     "Electric Jello",
                     "A musty old library nobody ever comes out of",
                     "Shrek's Swamp",
-
                     )
 
     n = 0
