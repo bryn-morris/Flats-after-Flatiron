@@ -6,6 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import datetime
 import os, time
+import random 
+from helpers import *
 
 
 engine = create_engine("sqlite:///lib/db/project.db")
@@ -79,26 +81,16 @@ class CLI():
 
                 # use this to clear the command line interface to make "screens"
             os.system('cls' if os.name == 'nt' else 'clear')
-            choice = input('''
+            choice = input(f'''
 
             ><><><><><><><><><><><><><><><><><><><><><><><><><                   <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
             ><><><><><><><><><><><><><><><><><><><><><><><><><      Main Menu    ><><><><><><><><><><><><><><><><><><><><><><><><><><><><
             ><><><><><><><><><><><><><><><><><><><><><><><><><                   <><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
 
 
-                                                         __             _,-"~^"-.
-                                                       _// )      _,-"~`         `.
-                                                      ." ( /`"-,-"`                 ;
-                                                     / 6                             ;
-                                                    /           ,             ,-"     ;
-                                                   (,__.--.      \           /        ;
-                                                    //'   /`-.\   |          |        `._________
-                                                      _.-'_/`  )  )--...,,,___\     \-----------,)
-                                                    ((("~` _.-'.-'           __`-.   )         //
-                                                      jgs ((("`             (((---~"`         //
-                                                                                            ((________________
-                                                                                             `----""""~~~~^^^```
-
+                                                                       
+                                                         {welcome_images[0]}
+                                                       
 
                                                            What would you like to do?
 

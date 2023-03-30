@@ -79,6 +79,7 @@ if __name__ == '__main__':
                     "A dark, cozy hole to sleep in",
                     "Electric Jello",
                     "A musty old library nobody ever comes out of",
+                    "Shrek's Swamp",
 
                     )
 
@@ -123,12 +124,16 @@ if __name__ == '__main__':
 
     reason_table = [
         "Running from the spider in my room : (",
-        "Family Vacation!",
-        "Business Trip, on the company's dime",
         "I'm not sure, I just woke up here!",
         "I'm just here for the bug convention",
         "Ghosts",
-        
+        "My in-laws were in town, had to get away",
+        "In search of the biggest macaroon",
+        "Fleeing the Balrog", 
+        "Weekend at Bernie's", 
+        "Visiting my cousin's ex-hair stylist's uncle's hamster",
+        "To collect as many hotel toiletries as possible",
+        "Blind date with @Bigfoot"
         ]
     
     for dateset in sample_vacation_dates:
