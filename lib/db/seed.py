@@ -18,11 +18,12 @@ if __name__ == '__main__':
     session.query(Domicile).delete()
     session.query(Traveler).delete()
     
+    
     # Populating Traveler List with Faker
 
     i = 0
     sample_travelers = []
-    while i <=5:
+    while i <=7:
         sample_travelers.append({"first_name": faker.first_name(),
                          "last_name": faker.last_name(), 
                          "location": faker.city()})
@@ -86,7 +87,7 @@ if __name__ == '__main__':
     n = 0
     sample_domiciles = []
 
-    while n <=5:
+    while n <=7:
 
         random_property = random.choice(sample_properties)
 
