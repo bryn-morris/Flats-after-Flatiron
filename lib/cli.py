@@ -5,8 +5,8 @@ from db.models import Vacation, Traveler, Domicile
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import datetime
-import os
-import time
+import os, time
+
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Session = sessionmaker(bind=engine)
@@ -58,34 +58,54 @@ class CLI():
         self.trav_obj = new_traveler
     
     def start(self):
-        # use this to clear the command line interface to make "screens"
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
-        print(f'             ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
-              if self.trav_obj.first_name.lower() not in [trav.first_name for trav in CLI.lower_trav] and self.trav_obj.last_name.lower() not in [trav.last_name for trav in CLI.lower_trav] 
-              else f'             ><><><><><><><><><><><><>    WELCOME BACK TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
-        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-        print('')
-
+        
         exit = False
-
         while exit == False:
-            choice = input("What would you like to do? Type 'B' to book a vacation, Type 'V' to view your profile, or Type 'N' to browse all properties: ")
+
+                # use this to clear the command line interface to make "screens"
+            os.system('cls' if os.name == 'nt' else 'clear')
             print('')
+            print('')
+            print("            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+            # Not working - if first name OR last name matches, it registers as user already registered, need to take a look at logic - 
+            #  don't touch strings currently they line up with main menu
+            print(f'                         ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
+                if (self.trav_obj.first_name.lower() not in [trav.first_name for trav in CLI.lower_trav]) and (self.trav_obj.last_name.lower() not in [trav.last_name for trav in CLI.lower_trav]) 
+                else f'                         ><><><><><><><><><><><><>    WELCOME BACK TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
+            print("            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+
+            choice = input('''
+
+            ><><><><><><><><><><><><><><><><><><><><><><><><><                   <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+            ><><><><><><><><><><><><><><><><><><><><><><><><><      Main Menu    ><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+            ><><><><><><><><><><><><><><><><><><><><><><><><><                   <><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
+
+
+                                                         __             _,-"~^"-.
+                                                       _// )      _,-"~`         `.
+                                                      ." ( /`"-,-"`                 ;
+                                                     / 6                             ;
+                                                    /           ,             ,-"     ;
+                                                   (,__.--.      \           /        ;
+                                                    //'   /`-.\   |          |        `._________
+                                                      _.-'_/`  )  )--...,,,___\     \-----------,)
+                                                    ((("~` _.-'.-'           __`-.   )         //
+                                                      jgs ((("`             (((---~"`         //
+                                                                                            ((________________
+                                                                                             `----""""~~~~^^^```
+
+
+                                                           What would you like to do?
+
+                                    Book a Vacation            View your Profile             Browse all Properties
+                                      [[Type 'B']]                [[Type 'V']]                    [[Type 'N']]
+
+
+
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+            ''')
+            
 
             if choice.lower() == 'b':
                 self.book()
@@ -95,70 +115,95 @@ class CLI():
                 self.browse()
 
             print(' ')
-            user_input = input("Would you like to stop now? (Type Y/N): ")
+            print("Type 'T' for Title Menu or 'M' for Main Menu")
+            user_input = input("Where to next?: ")
             print(' ')
             
-            if user_input.lower() == 'y':
+            if user_input.lower() == 't':
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print(' ')
-                print("><><><><><><><><><><><><><><><><><")
-                print("><><><><><><><><><><><><><><><><><")
-                print(' ')
-                print('><><><><><>< GoodBye! <><><><><><>')
-                print(' ')
-                print("><><><><><><><><><><><><><><><><><")
-                print("><><><><><><><><><><><><><><><><><")
-                print(' ')
+                
                 exit = True
 
      
     def browse(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('')
-        print("             ><><><><><><><><><><><><><><><><><")
-        print('             ><><><>    Properties    ><><><><>')
-        print("             ><><><><><><><><><><><><><><><><><")
-        print(' ')
+        print('''
+        
+        ·····························································································································
+        ··················································      Properties    ·······················································
+        ····························································································································· 
+        
+        
+        ''')
+
+#Unable to pull up "Where to go from here menu" from here
 
         for i, d in enumerate(CLI.domiciles):
             try:
-                print("································································")
-                print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+                print("                                      ································································")
+                print(f'                                            {i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
             except:
                 pass
             finally:
-                print("································································")
+                print("                                      ································································")
 
         print("")
-        detailPropID = input('If you would like to see the details of a property please enter the number of the property in the list: ')
+        detailPropID = input('''
 
+                                        Please enter the number of the property to see more details: 
+                                
+        ····························································································································· 
+        ·····························································································································                         
+                            ''')
+        
         if int(detailPropID) in range(1, len(CLI.domiciles) + 1):
             os.system('cls' if os.name == 'nt' else 'clear')
                 
             dp = CLI.domiciles[int(detailPropID) - 1]
             print(' ')
-            print('** Property Details **')
-            print(' ')
-            print("································································")
-            print(f"Property Type: {dp.property_type}")
-            print("································································")
-            print(f"Location: {dp.dest_location}")
-            print("································································")
-            print(f"Sleeping Capacity: {dp.sleep_capacity}")
-            print("································································")
-            print(f"Local Amenities: {dp.local_amenities}")
-            print("································································")
 
-            viewPastBookings = input('Would you like to see the past bookings of this property? (y/n): ')
+            viewPastBookings = input(f'''
+        
+        ····························································································································· 
+        ··················································      Property Details    ·················································
+        ·····························································································································     
+            
+        
+        
+                                      ································································
+                                                            Property Type: 
+                                                                {dp.property_type}
+                                      ································································
+                                                            Location: 
+                                                                {dp.dest_location}
+                                      ································································
+                                                            Sleeping Capacity: 
+                                                                {dp.sleep_capacity}
+                                      ································································
+                                                            Local Amenities: 
+                                                        {dp.local_amenities}
+                                      ································································
 
 
-            print(' ')
-            print("><><><><><><><><><><><><><><><><><")
-            print("Here are some past residents!")
-            print("><><><><><><><><><><><><><><><><><")
-            print(' ')
+            
+                                        See past bookings                                            More Options 
+                                          [[Type 'B']]                                               [[Type 'M']]
+        ····························································································································· 
+        ····························································································································· 
+
+            ''')
+
+
+            
             history_count = 0
-            if viewPastBookings.lower() == 'y':
+            if viewPastBookings.lower() == 'b':
+
+                print(''' ''')
+                print("><><><><><><><><><><><><><><><><><")
+                print("Here are some past residents!")
+                print("><><><><><><><><><><><><><><><><><")
+                print(' ')
+
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
                 for v in pastVacations:
                     try:
@@ -473,6 +518,7 @@ if __name__ == '__main__':
         print("                        or C to exit         ")
         print("")
         print("-----------------------------------------------------------------")
+        time.sleep(1)
         
         user_input = input()
         if user_input == "":
@@ -490,15 +536,37 @@ if __name__ == '__main__':
             CLI(user_fn, user_ln, user_city)
         elif(user_input.lower() == "c"):
             os.system('cls' if os.name == 'nt' else 'clear')
-            print(' ')
-            print("><><><><><><><><><><><><><><><><><")
-            print("><><><><><><><><><><><><><><><><><")
-            print(' ')
-            print('><><><><><>< GoodBye! <><><><><><>')
-            print(' ')
-            print("><><><><><><><><><><><><><><><><><")
-            print("><><><><><><><><><><><><><><><><><")
-            print(' ')
+            print(''' 
+
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+                
+
+                                                        
+                                          ___                       _    _        _  _             _    
+                                         / __|    ___     ___    __| |  | |__    | || |   ___     | |   
+                                        | (_ |   / _ \   / _ \  / _` |  | '_ \    \_, |  / -_)    |_|   
+                                         \___|   \___/   \___/  \__,_|  |_.__/   _|__/   \___|   _(_)_  
+                                        _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_| """"|_|"""""|_| """ | 
+                                        "`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
+
+
+                                                                    _--"-.
+                                                                .-"       "-.
+                                                                |""--..      '-.
+                                                                |      ""--..   '-.
+                                                                |.-. .-".    ""--..".
+                                                                |'./  -_'  .-.      |
+                                                                |      .-. '.-'   .-'
+                                                                '--..  '.'    .-  -.
+                                                                     ""--..   '_'   :
+                                                                            ""--..   |
+                                                                                 ""-' mga
+
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+                
+                ''')
             break
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
