@@ -40,6 +40,7 @@ class Domicile(Base):
     __table_args__ = (PrimaryKeyConstraint('id'),)
 
     id = Column(Integer(), primary_key = True)
+    name = Column(String())
     dest_location = Column(String())
     # Ideally, use a list or some sort of other data structure
     sleep_capacity = Column(Integer())
@@ -49,7 +50,8 @@ class Domicile(Base):
     # price = Column(Integer())
     property_type = Column(String())
     
-    def __init__(self, dest_location, sleep_capacity, local_amenities, property_type):
+    def __init__(self, name, dest_location, sleep_capacity, local_amenities, property_type):
+        self.name = name
         self.dest_location = dest_location
         self.sleep_capacity = sleep_capacity
         self.local_amenities = local_amenities
@@ -59,6 +61,7 @@ class Domicile(Base):
 
     def __repr__(self):
         return f"id = {self.id}," \
+            + f"name = {self.name}," \
             + f"dest_location = {self.dest_location}," \
             + f"sleep_capacity = {self.sleep_capacity}," \
             + f"local_amenities = {self.local_amenities}," \

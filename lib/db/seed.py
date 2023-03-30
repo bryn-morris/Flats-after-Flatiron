@@ -46,30 +46,52 @@ if __name__ == '__main__':
         session.commit()
     
     # Populating Domicile List
+    random_mansion = ["Bly Manor", "Hillhouse", "Pemberly Estate", "Wuthering Heights", "Rottbrandt Residence", "Thornfield Hall", ]
+    random_farmhouse = ["Tara Farmhouse", "The Ingles Family Farm", "Green Gables", "The Farm", "The Farmhouse", "The Tenant Farmhouse"]
+    random_boat = ["S.S. Venture", "Jenny", "The Inferno", "The Black Pearl", "The Pequod", "The Spinacher",  "The Titanic"]
+    random_barrel = ["The Cask of Amontillado", "A Plastic Drum", "The Splintery Barrel", "A High-Density Polyethylene Barrel", "A Whiskey Barrel", "The Drunken Keg"]
+    random_castle = ["Dracula Castle", "Castle Black", "Castle Blanca", "The Dark Tower", "Hogwarts", "Elsa's Ice Palace"]
+    random_cottage = ["Grandma's Cottage", ]
+    random_yurt = ["A Mongolian Ger", "A Tibetan Yurt", "A Kyrgyz Yurt", "A Kazakh Yurt"]
+    random_bunker = ["10 Cloverfield Lane", "The War Room", "Area 51 Bunker", "The Burlington Bunker", "Whitehouse Bunker", "Greenbrier Bunker", "The Hive"]
+    random_spaceshuttle = []
+    random_beachhouse = ["Grace's Beach House", "Island Escape" ]
+    
+    
+    #if there's time, we can add sample amenities to be tied to each sample property
+    # could we extrapolate these random lists into a table?
 
     sample_properties = [{"sc": random.randint(2,6),
                          "p_type": "Beach House", 
                          },{"sc": random.randint(1,4),
                          "p_type": "Bunker", 
+                         "name": random.choice(random_bunker)
                          },{"sc": random.randint(1,2),
                          "p_type": "Space Shuttle", 
                          },{"sc": random.randint(4,8),
-                         "p_type": "Yacht", 
+                         "p_type": "Boat",
+                         "name" : random.choice(random_boat)
                          },{"sc": random.randint(1,1),
-                         "p_type": "Barrel", 
+                         "p_type": "Barrel",
+                         "name": random.choice(random_barrel) 
                          },{"sc": random.randint(10,30),
-                         "p_type": "Castle", 
+                         "p_type": "Castle",
+                         "name": random.choice(random_castle) 
                          },{"sc": random.randint(2,5),
                          "p_type": "Cottage", 
                          },{"sc": random.randint(1,2),
-                         "p_type": "Yurt", 
+                         "p_type": "Yurt",
+                         "name": random.choice(random_yurt) 
                          },{"sc": random.randint(5,9),
                          "p_type": "Mansion", 
+                         "name": random.choice(random_mansion)
                          },{"sc": random.randint(3,5),
                          "p_type": "Farmhouse", 
+                         "name": random.choice(random_farmhouse)
                          } 
                         ]
-    
+   
+
     amenities_list= (
                     "There is a kitchen somewhere around here...",
                     "Waterpark but it's filled with snakes",
@@ -89,9 +111,11 @@ if __name__ == '__main__':
 
     while n <=7:
 
+        #maybe make the name unique? 
         random_property = random.choice(sample_properties)
 
-        sample_domiciles.append({"dest_location": faker.city(),
+        sample_domiciles.append({ "name": random_property["name"],
+                         "dest_location": faker.city(),
                          "sleep_capacity": random_property["sc"], 
                          "local_amenities": random.choice(amenities_list),
                          "property_type": random_property["p_type"]})
