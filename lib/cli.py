@@ -61,6 +61,7 @@ class CLI():
 
         ''')
         time.sleep(3)
+        os.system('cls' if os.name == 'nt' else 'clear')
         self.start()
 
     def traveler(self):
@@ -139,7 +140,7 @@ class CLI():
         for i, d in enumerate(CLI.domiciles):
             try:
                 print("                                      ······························································································")
-                print(f'                                            {i + 1}. Property Name: {d.name}, Location: {d.dest_location}')
+                print(f'                                            {i + 1}. Property Name: {d.name}, Property Type: {d.property_type} Location: {d.dest_location}')
             except:
                 pass
             finally:
@@ -372,8 +373,9 @@ class CLI():
                 print(f"                              {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
         
     # This breaks if there are no vacations to edit and user hits yes
+            print('')
             edit = input('                                      Would you like to edit a vacation(y/n)? ')
-
+            print('')
             if edit.lower() == 'y':
                 if len(my_vacations) > 1:
                     chosen_vaca = input("                                Type the number of the vacation you'd like to edit/delete ")
@@ -396,15 +398,12 @@ class CLI():
                 update_action = input("                         To update this vacation, type 'U', to delete this vacation, type 'D': ")
 
                 print('')
-    # add logic to make sure updated dates are in the correct range
-    # can't exit once in enter date screen
                 if update_action.lower() == 'u':
                     edit_prop = input("                      Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
                     date_format = '%Y-%m-%d'
                     if edit_prop == '1':
                         while True:
                             try:
-                                os.system('cls' if os.name == 'nt' else 'clear')
                                 vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.start_date)
                                 print("")
                                 print("                         This location currently has other reservations during: ")
@@ -419,7 +418,9 @@ class CLI():
                                         ><><><><><><><><><><><><><><><><><
                                             {v.start_date} to {v.end_date}''')
                                 print('')
-                                new_start_date = input("                                        Please enter your new start date: ")
+                                new_start_date = input("                                   Please enter your new start date or x to exit: ")
+                                if new_start_date.lower() == "x":
+                                    break
                                 newStartDate = datetime.datetime.strptime(new_start_date, date_format).date()
 
                                 difference_dict = {}
@@ -431,21 +432,32 @@ class CLI():
                                 for key, value in copy_diff_dict.items():
                                     
                                     if value >= 0:
-                                        del difference_dict[key]
-                                                                    
-                                closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
-
-    # Breaks if there is not a later date to reference for cv.end_date
-                                if closest_end_date < newStartDate < cv.end_date:
-                                    print(f'''
-                                                                    ><><><><><><><><><><><><><><><><><><><><><><
-                                                                    Here is your new start date: {newStartDate}
-                                                                    ><><><><><><><><><><><><><><><><><><><><><><
-                                        ''')
-                                    cv.start_date = newStartDate
-                                    session.commit()
+                                        del difference_dict[key]                                                                                                  
+                                
+                                if len(difference_dict) > 0:
+                                    closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
+                                    if closest_end_date < newStartDate < cv.end_date:
+                                        print(f'''
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                                                        Here is your new start date: {newStartDate}
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                            ''')
+                                        cv.start_date = newStartDate
+                                        session.commit()
+                                    else:
+                                        raise ValueError
+                                elif(len(difference_dict) == 0):
+                                    if newStartDate < cv.end_date:
+                                        print(f'''                                      
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                                                        Here is your new start date: {newStartDate}
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                            ''')
+                                        cv.start_date = newStartDate
+                                        session.commit()
                                 else:
                                     raise ValueError
+
                             except:
                                 os.system('cls' if os.name == 'nt' else 'clear')
                                 print("")
@@ -457,6 +469,7 @@ class CLI():
                     elif edit_prop == '2':
                         while True:
                             try:
+                                os.system('cls' if os.name == 'nt' else 'clear')
                                 vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date.desc())
                                 print("")
                                 print("                                This location currently has other reservations during: ")
@@ -471,7 +484,9 @@ class CLI():
                                             {v.start_date} to {v.end_date}
                                         ''')
                                 print("")    
-                                new_end_date = input("                                Please enter your new end date: ")
+                                new_end_date = input("                           Please enter your new end date or x to exit: ")
+                                if new_end_date.lower() == "x":
+                                    break
                                 newEndDate = datetime.datetime.strptime(new_end_date, date_format).date()
 
                                 difference_dict = {}
@@ -484,20 +499,32 @@ class CLI():
                                     
                                     if value < 0:
                                         del difference_dict[key]
-        
                                 
-                                closest_start_date = min(difference_dict, key = lambda val: difference_dict[val])
-
-                                if closest_start_date > newEndDate > cv.start_date:
-                                    print(f'''                                      ><><><><><><><><><><><><><><><><><
-                                                                    Here is your new end date: {newEndDate}
-                                                                                    ><><><><><><><><><><><><><><><><><
-                                        ''')
-                                    cv.end_date = newEndDate
-                                    session.commit()
+                                if len(difference_dict) > 0:
+                                    closest_start_date = min(difference_dict, key = lambda val: difference_dict[val])
+                                    if closest_start_date > newEndDate > cv.start_date:
+                                        print(f'''                                      ><><><><><><><><><><><><><><><><><
+                                                                        Here is your new end date: {newEndDate}
+                                                                                        ><><><><><><><><><><><><><><><><><
+                                            ''')
+                                        cv.end_date = newEndDate
+                                        session.commit()
+                                    else:
+                                        raise ValueError
+                                elif(len(difference_dict) == 0):
+                                    if newEndDate > cv.start_date:
+                                        print(f'''                                      
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                                                        Here is your new end date: {newEndDate}
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                            ''')
+                                        cv.end_date = newEndDate
+                                        session.commit()
                                 else:
                                     raise ValueError
                             except:
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                print("")
                                 print('                                PLEASE ENTER A VALID DATE!')
                                 print("")
                                 continue
@@ -528,21 +555,17 @@ class CLI():
                                         vcount += 1
                             if vcount == len(d.vacations):
                                 available_domiciles.append(d)
-                        
-                        print("                                Available Properties:")
-                        new_vacations = [v for v in self.trav_obj.vacations]
+                        # If you enter something other than a property number, the program crashes
+                        print("                                                 Available Properties:")
                         for i, d in enumerate(available_domiciles):
-                            for i, v in enumerate(new_vacations):
-                                try:
-                                    print("                                --------------------------------------------------------------------------")
-                                    print(f'                                {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}')
-                                except:
-                                    pass
-                                finally:
-                                    print("                                --------------------------------------------------------------------------")
-                            
-                        print('')
-                        new_dom = input("                                Please enter the number of the property you would like to switch to: ")
+                            print(f'''                                
+                                                                      --------------------------------------------------------------------------
+                                                                        {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}')
+                                                                      --------------------------------------------------------------------------
+                            ''') 
+                        new_dom = input('''
+                                                                         Please enter the number of the property you would like to switch to: 
+                        ''')
                         
                         dom_pre_change = tuple([d for d in CLI.domiciles if d.id == cv.Domicile_id])
 

@@ -61,7 +61,27 @@ if __name__ == '__main__':
     #if there's time, we can add sample amenities to be tied to each sample property
     # could we extrapolate these random lists into a table?
 
-    sample_properties = [{"sc": random.randint(2,6),
+    
+   
+    amenities_list= (
+                    "There is a kitchen somewhere around here...",
+                    "Waterpark but it's filled with snakes",
+                    "A duck pond but all of the ducks have a taste for human flesh",
+                    "Greg",
+                    "Sometimes at night you can hear whispers on the wind...",
+                    "The nearby town only appears every 100 years!",
+                    "A dark, cozy hole to sleep in",
+                    "Electric Jello",
+                    "A musty old library nobody ever comes out of",
+                    "Shrek's Swamp",
+                    )
+
+    n = 0
+    sample_domiciles = []
+
+    while n <=7:
+
+        sample_properties = [{"sc": random.randint(2,6),
                          "p_type": "Beach House",
                          "name": random.choice(random_beachhouse) 
                          },{"sc": random.randint(1,4),
@@ -93,26 +113,7 @@ if __name__ == '__main__':
                          "name": random.choice(random_farmhouse)
                          } 
                         ]
-   
-    amenities_list= (
-                    "There is a kitchen somewhere around here...",
-                    "Waterpark but it's filled with snakes",
-                    "A duck pond but all of the ducks have a taste for human flesh",
-                    "Greg",
-                    "Sometimes at night you can hear whispers on the wind...",
-                    "The nearby town only appears every 100 years!",
-                    "A dark, cozy hole to sleep in",
-                    "Electric Jello",
-                    "A musty old library nobody ever comes out of",
-                    "Shrek's Swamp",
-                    )
 
-    n = 0
-    sample_domiciles = []
-
-    while n <=7:
-
-        #maybe make the name unique? 
         random_property = random.choice(sample_properties)
 
         if random_property["p_type"] != "Space Shuttle":
@@ -124,7 +125,7 @@ if __name__ == '__main__':
             n += 1
         else:
             sample_domiciles.append({ "name": random_property["name"],
-                            "dest_location": "Space!",
+                            "dest_location": "Somewhere in Space!",
                             "sleep_capacity": random_property["sc"], 
                             "local_amenities": random.choice(amenities_list),
                             "property_type": random_property["p_type"]})
