@@ -30,12 +30,12 @@ class CLI():
 
     travelers = [traveler for traveler in session.query(Traveler)]
     
-    lower_trav = []
+    # lower_trav = []
 
-    for traveler in travelers:
-        traveler.first_name = traveler.first_name.lower()
-        traveler.last_name = traveler.last_name.lower()
-        lower_trav.append(traveler)
+    # for traveler in travelers:
+    #     traveler.first_name = traveler.first_name.lower()
+    #     traveler.last_name = traveler.last_name.lower()
+    #     lower_trav.append(traveler)
 
     vacations = session.query(Vacation).all()
 
@@ -43,7 +43,22 @@ class CLI():
         self.first_name = user_fn
         self.last_name = user_ln
         self.city = user_city
-        self.traveler() 
+        self.traveler()
+        print('''            
+            
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+            ''')
+            # Not working - if first name OR last name matches, it registers as user already registered, need to take a look at logic - 
+            #  don't touch strings currently they line up with main menu
+        print(f'                         ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
+                # if (self.trav_obj.first_name.lower() not in [trav.first_name for trav in CLI.lower_trav]) and (self.trav_obj.last_name.lower() not in [trav.last_name for trav in CLI.lower_trav]) 
+                # else f'                         ><><><><><><><><><><><><>    WELCOME BACK TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
+                )
+        print('''
+            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+        ''')
+        time.sleep(3)
         self.start()
 
     def traveler(self):
@@ -64,16 +79,6 @@ class CLI():
 
                 # use this to clear the command line interface to make "screens"
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('')
-            print('')
-            print("            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
-            # Not working - if first name OR last name matches, it registers as user already registered, need to take a look at logic - 
-            #  don't touch strings currently they line up with main menu
-            print(f'                         ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
-                if (self.trav_obj.first_name.lower() not in [trav.first_name for trav in CLI.lower_trav]) and (self.trav_obj.last_name.lower() not in [trav.last_name for trav in CLI.lower_trav]) 
-                else f'                         ><><><><><><><><><><><><>    WELCOME BACK TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
-            print("            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
-
             choice = input('''
 
             ><><><><><><><><><><><><><><><><><><><><><><><><><                   <><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -171,29 +176,25 @@ class CLI():
             
         
         
-                                      ································································
-                                                             Property Type: {dp.property_type}
-                                      ································································
-                                                             Location: {dp.dest_location}
-                                      ································································
-                                                            Sleeping Capacity: {dp.sleep_capacity}
-                                      ································································
-                                                            Local Amenities: 
-                                                            {dp.local_amenities}
-                                      ································································
+                                    ··································································
+                                      Property Type: {dp.property_type}
+                                    ··································································
+                                      Location: {dp.dest_location}
+                                    ··································································
+                                      Sleeping Capacity: {dp.sleep_capacity}
+                                    ··································································
+                                      Local Amenities:  {dp.local_amenities}                    
+                                    ··································································
 
 
             
-                                        See past bookings                                            More Options 
-                                          [[Type 'B']]                                               [[Type 'M']]
+                                    See Past Bookings                                            More Options 
+                                      [[Type 'B']]                                               [[Type 'M']]
         ····························································································································· 
         ····························································································································· 
 
             ''')
 
-
-            
-            history_count = 0
             if viewPastBookings.lower() == 'b':
                 os.system('cls' if os.name == 'nt' else 'clear')
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
@@ -212,9 +213,8 @@ class CLI():
                 for v in pastVacations:
                     try:
                         print("                                   ···········································································")
-                        print(f"                                   {history_count}. {v.traveler.first_name.capitalize()} {v.traveler.last_name.capitalize()}")
+                        print(f"                                     {v.traveler.first_name.capitalize()} {v.traveler.last_name.capitalize()}")
                         print(f"                                         Reason for visit: {v.rsn_for_visit}")
-                        history_count += 1
                     except:
                         pass
                     finally:
@@ -228,7 +228,7 @@ class CLI():
     def book(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         date_format = '%Y-%m-%d'
-
+# not able to exit out of date entry loop without terminating terminal
         # accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
 
         
@@ -296,7 +296,7 @@ class CLI():
         print("><><><><><><><><><><><><><><><><><")
         print('Here are the available domiciles: ')
         for i, d in enumerate(filtered_domiciles):
-            print(f'{i + 1}. {d.property_type}')
+            print(f'{i + 1}. {d.property_type} in {d.dest_location}')
         print("><><><><><><><><><><><><><><><><><")
         print('')
 
@@ -314,62 +314,84 @@ class CLI():
 # Add functionality if user says no (return to domicile list)
 # Add functionality to kick user back to main menu
             if book_prop.lower() == 'y':
-                print('')
-                print("><><><><><><><><><><><><><><><><><")
-                print('Great! We support electronic sign in.')
-                print("><><><><><><><><><><><><><><><><><")
-                print('')
-                rsn_response = input('What is the reason for your visit? ')
+                rsn_response = input(f'''
+
+                    ><><><><><><><><><><><><><><><><>><><><><><><><><><><><><><><><><><><><>
+
+                                              Great! Last step!
+
+                                              ><><><><><><><><>
+                                
+                                Sign into your vacation by signing the log book!
+                                vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+                                 
+                                             {self.trav_obj.first_name}                  {self.trav_obj.last_name}  
+
+                                        ----------------------------------
+                                        What is the reason for your visit?
+                                        ----------------------------------
+                
+                                        ''')
+                print('''
+                    ><><><><><><><><><><><><><><><><>><><><><><><><><><><><><><><><><><><><>
+                ''', flush=True)
 
                 session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id, rsn_response))
                 session.commit()
-                print('')
-                print("><><><><><><><><><><><><><><><><><")
-                print('Congrats! Your vacation is booked!')
-                print("><><><><><><><><><><><><><><><><><")
-                print('')
+                print('''
+
+                                        ><><><><><><><><><><><><><><><><><
+                                        Congrats! Your vacation is booked!
+                                        ><><><><><><><><><><><><><><><><><
+
+                ''')
 
 
     def view_update(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('')
-        print("><><><><><><><><><><><><><><><><><")
-        print(" **My Profile** ")
-        print("><><><><><><><><><><><><><><><><><")
-        print('')
+        print(''')
+                                        ><><><><><><><><><><><><><><><><><
+                                                **My Profile** 
+                                        ><><><><><><><><><><><><><><><><><
+                                        
+        ''')
 
-        print(f'First Name: {self.trav_obj.first_name}')
-        print(f'Last Name: {self.trav_obj.last_name}')
-        print(f'Location: {self.trav_obj.location}')
+        print(f'                                            First Name: {self.trav_obj.first_name}')
+        print(f'                                            Last Name: {self.trav_obj.last_name}')
+        print(f'                                            Location: {self.trav_obj.location}')
 
         print('')
 
         my_vacations = [v for v in self.trav_obj.vacations]
 
-        print('')
-        print("><><><><><><><><><><><><><><><><><")
-        print('Your vacations:')
-        print("><><><><><><><><><><><><><><><><><")
-        print('')
+        print('''
+
+                                        ><><><><><><><><><><><><><><><><><
+                                                 Your vacations:
+                                        ><><><><><><><><><><><><><><><><><
+
+        ''')
 
         if len(my_vacations) > 0:
             for i, v in enumerate(my_vacations):
-                print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
+                print(f"                              {i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
         else:
-            print('')
-            print("><><><><><><><><><><><><><><><><><")
-            print("No vacations booked yet!")
-            print("><><><><><><><><><><><><><><><><><")
-            print('')
+            print(''')
+
+                                        ><><><><><><><><><><><><><><><><><
+                                            No vacations booked yet!
+                                        ><><><><><><><><><><><><><><><><><
+
+            ''')
 
         print('')
 
-        edit = input('Would you like to edit a vacation(y/n)? ')
+        edit = input('                                      Would you like to edit a vacation(y/n)? ')
 
         
         if edit.lower() == 'y':
             if len(my_vacations) > 1:
-                chosen_vaca = input("Type the number of the vacation you'd like to edit/delete ")
+                chosen_vaca = input("                                Type the number of the vacation you'd like to edit/delete ")
                 print('')
 
                 if int(chosen_vaca) in range(1, len(my_vacations) + 1):
@@ -378,32 +400,42 @@ class CLI():
             elif len(my_vacations) == 1:
                 cv = my_vacations[0]
                 
-            print(f"Currently Editing Vacation: {cv.domicile.property_type}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}" )
+            print(f'''                     
+                                        ><><><><><><><><><><><><><><><><><
 
-            print('')
-            update_action = input("To update this vacation, type 'U', to delete this vacation, type 'D': ")
+                    Currently Editing Vacation: {cv.domicile.property_type}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}
+                                                
+                                                ''')
+
+            
+            update_action = input("                         To update this vacation, type 'U', to delete this vacation, type 'D': ")
 
             print('')
 # add logic to make sure updated dates are in the correct range
 # can't exit once in enter date screen
 # add end date addition functionality
             if update_action.lower() == 'u':
-                edit_prop = input("Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
+                edit_prop = input("                      Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
                 date_format = '%Y-%m-%d'
                 if edit_prop == '1':
                     while True:
                         try:
-                            vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.start_date.desc())
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.start_date)
                             print("")
-                            print("This location currently has other reservations during: ")
+                            print("                         This location currently has other reservations during: ")
                             print("")
                             for v in vac_by_cvd:
                                 if v == cv:
-                                    print(f"***{v.start_date} to {v.end_date}***")
+                                    print(f'''
+                                    ><><><><><><><><><><><><><><><><><                               
+                                        {v.start_date} to {v.end_date}   ⟸ Current Vacation''')
                                 else:
-                                    print(f"{v.start_date} to {v.end_date}")
-                            print("")    
-                            new_start_date = input("Please enter your new start date: ")
+                                    print(f'''
+                                    ><><><><><><><><><><><><><><><><><
+                                        {v.start_date} to {v.end_date}''')
+                            print('')
+                            new_start_date = input("                                    Please enter your new start date: ")
                             newStartDate = datetime.datetime.strptime(new_start_date, date_format).date()
 
                             difference_dict = {}
@@ -411,25 +443,27 @@ class CLI():
                                 difference_dict[date] = (date-newStartDate).days
 
                             copy_diff_dict = difference_dict.copy()
-
-                            print(f" Here is the difference dict: {difference_dict}")
                             
                             for key, value in copy_diff_dict.items():
                                 
                                 if value >= 0:
                                     del difference_dict[key]
-                                    print(difference_dict)
-                            
+                                                                
                             closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
 
                             if closest_end_date < newStartDate < cv.end_date:
-                                print(f"Here is your new start date: {newStartDate}")
+                                print(f'''                                      ><><><><><><><><><><><><><><><><><
+                                                                Here is your new start date: {newStartDate}
+                                                                                ><><><><><><><><><><><><><><><><><
+                                    ''')
                                 cv.start_date = newStartDate
                                 session.commit()
                             else:
                                 raise ValueError
                         except:
-                            print('PLEASE ENTER A VALID DATE!')
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            print("")
+                            print('                                         PLEASE ENTER A VALID DATE!')
                             print("")
                             continue
                         else:
@@ -437,16 +471,64 @@ class CLI():
                 elif edit_prop == '2':
                     while True:
                         try:
-                            new_end_date = input("Please enter your new end date: ")
+                            vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date.desc())
+                            print("")
+                            print("                                This location currently has other reservations during: ")
+                            print("")
+                            for v in vac_by_cvd:
+                                if v == cv:
+                                    print(f'''                                     ><><><><><><><><><><><><><><><><><
+                                        {v.start_date} to {v.end_date} ⟸  Current Vacation 
+                                    ''')
+                                else:
+                                    print(f'''                                     ><><><><><><><><><><><><><><><><><
+                                        {v.start_date} to {v.end_date}
+                                    ''')
+                            print("")    
+                            new_end_date = input("                                Please enter your new end date: ")
                             newEndDate = datetime.datetime.strptime(new_end_date, date_format).date()
-                            print(f"Here is your new end date: {newEndDate}")
-                            cv.end_date = newEndDate
-                            session.commit()
+
+                            difference_dict = {}
+                            for date in [v.start_date for v in vac_by_cvd]:
+                                difference_dict[date] = (date-newEndDate).days
+
+                            copy_diff_dict = difference_dict.copy()
+                            
+                            for key, value in copy_diff_dict.items():
+                                
+                                if value < 0:
+                                    del difference_dict[key]
+    
+                            
+                            closest_start_date = min(difference_dict, key = lambda val: difference_dict[val])
+
+                            if closest_start_date > newEndDate > cv.start_date:
+                                print(f'''                                      ><><><><><><><><><><><><><><><><><
+                                                                Here is your new end date: {newEndDate}
+                                                                                ><><><><><><><><><><><><><><><><><
+                                    ''')
+                                cv.end_date = newEndDate
+                                session.commit()
+                            else:
+                                raise ValueError
                         except:
-                            print('PLEASE ENTER A VALID DATE!')
+                            print('                                PLEASE ENTER A VALID DATE!')
+                            print("")
                             continue
                         else:
                             break
+                    # while True:
+                    #     try:
+                    #         new_end_date = input("                                Please enter your new end date: ")
+                    #         newEndDate = datetime.datetime.strptime(new_end_date, date_format).date()
+                    #         print(f"                                Here is your new end date: {newEndDate}")
+                    #         cv.end_date = newEndDate
+                    #         session.commit()
+                    #     except:
+                    #         print('                                PLEASE ENTER A VALID DATE!')
+                    #         continue
+                    #     else:
+                    #         break
                 elif edit_prop == '3':
                     available_domiciles = []
                     for d in CLI.domiciles:
@@ -461,19 +543,19 @@ class CLI():
                         if vcount == len(d.vacations):
                             available_domiciles.append(d)
                     
-                    print("Available Properties:")
+                    print("                                Available Properties:")
                     for i, d in enumerate(available_domiciles):
                         for i, v in enumerate(new_vacations):
                             try:
-                                print("--------------------------------------------------------------")
-                                print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+                                print("                                --------------------------------------------------------------")
+                                print(f'                                {i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
                             except:
                                 pass
                             finally:
-                                print("--------------------------------------------------------------")
+                                print("                                --------------------------------------------------------------")
                         
                     print('')
-                    new_dom = input("Please enter the number of the property you would like to switch to: ")
+                    new_dom = input("                                Please enter the number of the property you would like to switch to: ")
                     
                     dom_pre_change = tuple([d for d in CLI.domiciles if d.id == cv.Domicile_id])
 
@@ -482,23 +564,23 @@ class CLI():
                         cv.Domicile_id = new_property.id
                         session.commit()
 
-                        print(f"Congrats! Property changed from {dom_pre_change[0].property_type} in {dom_pre_change[0].dest_location} to {new_property.property_type} in {new_property.dest_location}")
+                        print(f"                                Congrats! Property changed from {dom_pre_change[0].property_type} in {dom_pre_change[0].dest_location} to {new_property.property_type} in {new_property.dest_location}")
                         
             elif update_action.lower() == 'd': 
                 session.delete(cv)
                 session.commit()
-                print('Vacation deleted successfully!')
-                print('Your vacations:')
+                print('                                Vacation deleted successfully!')
+                print('                                Your vacations:')
                 new_vacations = [v for v in self.trav_obj.vacations]
                 if len(new_vacations) > 0:
                     for i, v in enumerate(new_vacations):
                         try:
-                            print("--------------------------------------------------------------")
+                            print("                                --------------------------------------------------------------")
                             print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
                         except:
                             pass
                         finally:
-                            print("--------------------------------------------------------------")
+                            print("                                --------------------------------------------------------------")
                 else:
                     print("No vacations booked yet!")
 
@@ -506,42 +588,41 @@ if __name__ == '__main__':
     login_counter = 0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print("")
-        print("")
-        print("")
-        print("")
-        print("")
-        print("")
-        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><")
-        print("><><><><><><><><>                        <><><><><><><><><><><><")
-        print("><><><><><><><><>  FLATS AFTER FLATIRON  <><><><><><><><><><><><")
-        print("><><><><><><><><>                        <><><><><><><><><><><><")
-        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><")
-        print("")
-        print("")
-        print("")
-        print("")
-        print("-----------------------------------------------------------------")
-        print("")
-        print("                   Press Enter to get Started")
-        print("                        or C to exit         ")
-        print("")
-        print("-----------------------------------------------------------------")
+        print('''
+        
+        
+                                              ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+                                              ><><><><><><><><>                        <><><><><><><><><><><><
+                                              ><><><><><><><><>  FLATS AFTER FLATIRON  <><><><><><><><><><><><
+                                              ><><><><><><><><>                        <><><><><><><><><><><><
+                                              ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+
+                                              -----------------------------------------------------------------
+                                                                 Press Enter to get Started
+                                                                      or C to exit       
+                                              -----------------------------------------------------------------
+            ''')
         time.sleep(1)
         
         user_input = input()
         if user_input == "":
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("")
-            print("")
-            print("-----------------------------------------------")
-            user_fn = input("Enter Your First Name: ")
-            user_ln = input("Enter Your Last Name: ")
-            user_city = input("Enter Your City Name: ")
-            print("-----------------------------------------------")
+            print(f'''
+
+
+                                              ><><><><><><><><><><><><><><><><><><><><><><><>
+            ''')
+            user_fn = input("                                                  Enter Your First Name:     ")
+            print ("")
+            user_ln = input("                                                  Enter Your Last Name:      ")
+            print ("")
+            user_city = input("                                                  Enter Your City Name:      ")
+            print(f'''                         
+                                              ><><><><><><><><><><><><><><><><><><><><><><><>
+                                                                           
+            ''')
+            
             time.sleep(1)
-            print("")
-            print("")
             CLI(user_fn, user_ln, user_city)
         elif(user_input.lower() == "c"):
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -579,19 +660,25 @@ if __name__ == '__main__':
             break
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("")
-            print("")
-            print("                         ヽ(ಠ_ಠ)ノ"
-                  if login_counter == 0 else
-                   "                      ( ͠° ͟ʖ ͡° )")
-            print("")
-            print("")
-            print("Press Enter Please! This is an exercise in following directions..."
-             if login_counter == 0 else 
-             "This REALLY isn't that hard...press" + color.BOLD +  " E.N.T.E.R" + color.END + "..." )
-            print("")
-            print("")
-            print("")
+            print(f'''
+
+            
+                                                         
+                                                        {'ヽ(ಠ_ಠ)ノ'if login_counter == 0 else '( ͠° ͟ʖ ͡° )'}
+
+
+
+
+                                    {
+                                    "Press Enter Please! This is an exercise in following directions..."
+                                    if login_counter == 0 else 
+                                    "This REALLY isn't that hard...press" + color.BOLD +  " E.N.T.E.R" + color.END + "..." 
+                                    }
+            
+                                        
+
+
+            ''')
             time.sleep(4)
             login_counter = 1
             continue

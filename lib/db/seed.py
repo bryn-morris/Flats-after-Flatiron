@@ -77,8 +77,9 @@ if __name__ == '__main__':
                     "Sometimes at night you can hear whispers on the wind...",
                     "The nearby town only appears every 100 years!",
                     "A dark, cozy hole to sleep in",
-                    "Electic Jello",
-                    "A musty old library nobody ever comes out of"
+                    "Electric Jello",
+                    "A musty old library nobody ever comes out of",
+
                     )
 
     n = 0
@@ -126,7 +127,8 @@ if __name__ == '__main__':
         "Business Trip, on the company's dime",
         "I'm not sure, I just woke up here!",
         "I'm just here for the bug convention",
-        "Ghosts"
+        "Ghosts",
+        
         ]
     
     for dateset in sample_vacation_dates:
