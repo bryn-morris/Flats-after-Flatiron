@@ -5,6 +5,7 @@ from db.models import Vacation, Traveler, Domicile
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import datetime
+import os
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Session = sessionmaker(bind=engine)
@@ -37,8 +38,25 @@ class CLI():
         self.trav_obj = new_traveler
     
     def start(self):
+        # use this to clear the command line interface to make "screens"
+        os.system('cls' if os.name == 'nt' else 'clear')
         print('')
-        print(f'WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!')
+        print('')
+        print('')
+        print('')
+        print('')
+        print('')
+        print('')
+        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+        print(f'             ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
+        print("><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>")
+        print('')
+        print('')
+        print('')
+        print('')
+        print('')
+        print('')
+        print('')
         print('')
 
         exit = False
@@ -59,18 +77,30 @@ class CLI():
             print(' ')
             
             if user_input.lower() == 'y':
-                print('GoodBye!')
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(' ')
+                print("><><><><><><><><><><><><><><><><><")
+                print("><><><><><><><><><><><><><><><><><")
+                print(' ')
+                print('><><><><><>< GoodBye! <><><><><><>')
+                print(' ')
+                print("><><><><><><><><><><><><><><><><><")
+                print("><><><><><><><><><><><><><><><><><")
                 print(' ')
                 exit = True
 
      
     def browse(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
         print('')
-        print('** Properties **')
-        print('')
+        print("><><><><><><><><><><><><><><><><><")
+        print('><><><>    Properties    ><><><><>')
+        print("><><><><><><><><><><><><><><><><><")
+        print(' ')
 
         for i, d in enumerate(CLI.domiciles):
             print(f'{i + 1}. Property Type: {d.property_type}, Location: {d.dest_location}')
+            print(".......................")
 
         print("")
         detailPropID = input('If you would like to see the details of a property please enter the number of the property in the list: ')
@@ -106,6 +136,7 @@ class CLI():
                         print("--------------------------------------------------------------")
         
     def book(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
         date_format = '%Y-%m-%d'
 
         # accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
@@ -133,7 +164,11 @@ class CLI():
 # We need to provide an example of the date input format or make it so how the
 # user formats their date doesnt matter
                 startDate = datetime.datetime.strptime(start_date, date_format).date()
+                print('')
+                print("><><><><><><><><><><><><><><><><><")
                 print(f"Here is your start date: {startDate}")
+                print("><><><><><><><><><><><><><><><><><")
+                print('')
             except:
                 print('Please enter a valid date! (year-month-day)')
                 continue
@@ -144,7 +179,11 @@ class CLI():
             try:
                 end_date = input("When would you like your vacation to end? (year-month-day) ")
                 endDate = datetime.datetime.strptime(end_date, date_format).date()
+                print('')
+                print("><><><><><><><><><><><><><><><><><")
                 print(f"Here is your end date: {endDate}")
+                print("><><><><><><><><><><><><><><><><><")
+                print('')
             except:
                 print('Please enter a valid date! (year-month-day)')
                 continue
@@ -163,10 +202,13 @@ class CLI():
                         vcount += 1
             if vcount == len(d.vacations):
                 filtered_domiciles.append(d)
-
+        print('')
+        print("><><><><><><><><><><><><><><><><><")
         print('Here are the available domiciles: ')
         for i, d in enumerate(filtered_domiciles):
             print(f'{i + 1}. {d.property_type}')
+        print("><><><><><><><><><><><><><><><><><")
+        print('')
 
         propID = input('Would you like to see the details of a property to book? Please enter one of the numbers above: ')
 
@@ -182,18 +224,29 @@ class CLI():
 # Add functionality if user says no (return to domicile list)
 # Add functionality to kick user back to main menu
             if book_prop.lower() == 'y':
+                print('')
+                print("><><><><><><><><><><><><><><><><><")
                 print('Great! We support electronic sign in.')
+                print("><><><><><><><><><><><><><><><><><")
+                print('')
                 rsn_response = input('What is the reason for your visit? ')
 
                 session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id, rsn_response))
                 session.commit()
+                print('')
+                print("><><><><><><><><><><><><><><><><><")
                 print('Congrats! Your vacation is booked!')
+                print("><><><><><><><><><><><><><><><><><")
+                print('')
 
 
     def view_update(self):
-        print(' ')
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('')
+        print("><><><><><><><><><><><><><><><><><")
         print(" **My Profile** ")
-        print(' ')
+        print("><><><><><><><><><><><><><><><><><")
+        print('')
 
         print(f'First Name: {self.trav_obj.first_name}')
         print(f'Last Name: {self.trav_obj.last_name}')
@@ -203,13 +256,21 @@ class CLI():
 
         my_vacations = [v for v in self.trav_obj.vacations]
 
+        print('')
+        print("><><><><><><><><><><><><><><><><><")
         print('Your vacations:')
+        print("><><><><><><><><><><><><><><><><><")
+        print('')
 
         if len(my_vacations) > 0:
             for i, v in enumerate(my_vacations):
                 print(f"{i + 1}. {v.domicile.property_type}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
         else:
+            print('')
+            print("><><><><><><><><><><><><><><><><><")
             print("No vacations booked yet!")
+            print("><><><><><><><><><><><><><><><><><")
+            print('')
 
         print('')
 
