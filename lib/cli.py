@@ -248,10 +248,9 @@ class CLI():
 # not able to exit out of date entry loop without terminating terminal
         # accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
 
-        
-
         while True:
             try:
+                os.system('cls' if os.name == 'nt' else 'clear')
             #     usersd= input("When would you like your vacation to start?")
             #     for date_format in accepted_date_formats:
             #         try:
@@ -262,14 +261,13 @@ class CLI():
             #             break
             #     print(f"Here is your start date: {start_date}")
             # except:
-            #     print('Please enter a valid date! (year-month-day)')
+            #     print('Please enter a valid date!(YYYY-MM-DD)')
             #     continue
             # else:
             #     break
 
-
 # Fancy up and refactor
-                start_date = input("When would you like your vacation to start? (year-month-day) ")
+                start_date = input("When would you like your vacation to start? (YYYY-MM-DD) ")
 # We need to provide an example of the date input format or make it so how the
 # user formats their date doesnt matter
                 startDate = datetime.datetime.strptime(start_date, date_format).date()
@@ -279,22 +277,26 @@ class CLI():
                 print("><><><><><><><><><><><><><><><><><")
                 print('')
             except:
-                print('Please enter a valid date! (year-month-day)')
+                print('Please enter a valid date! (YYYY-MM-DD)')
+                time.sleep(2)
                 continue
             else:
                 break
-# Need to add logic so end date CANNOT be after start date without raising the except condition
         while True:
             try:
-                end_date = input("When would you like your vacation to end? (year-month-day) ")
-                endDate = datetime.datetime.strptime(end_date, date_format).date()
+                end_date = input("When would you like your vacation to end? (YYYY-MM-DD) ")
+                testEndDate = datetime.datetime.strptime(end_date, date_format).date()
+                if testEndDate < startDate:
+                    raise ValueError
+                else:
+                    endDate = testEndDate
                 print('')
                 print("><><><><><><><><><><><><><><><><><")
                 print(f"Here is your end date: {endDate}")
                 print("><><><><><><><><><><><><><><><><><")
                 print('')
             except:
-                print('Please enter a valid date! (year-month-day)')
+                print('Please enter a valid date! (YYYY-MM-DD)')
                 continue
             else:
                 break
@@ -368,6 +370,7 @@ class CLI():
 
     def view_update(self):
         os.system('cls' if os.name == 'nt' else 'clear')
+        # Make looks nicer and similar to previous screens
         print(''')
                                         ><><><><><><><><><><><><><><><><><
                                                 **My Profile** 
@@ -396,6 +399,7 @@ class CLI():
                 print(f"                              {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
         
     # This breaks if there are no vacations to edit and user hits yes
+    # what if we just get rid of this?
             print('')
             edit = input('                                      Would you like to edit a vacation(y/n)? ')
             print('')
@@ -448,16 +452,18 @@ class CLI():
 
                                 difference_dict = {}
                                 for date in [v.end_date for v in vac_by_cvd]:
-                                    difference_dict[date] = (date-newStartDate).days
-
+                                    difference_dict[date] = (date-cv.start_date).days
+                                    
                                 copy_diff_dict = difference_dict.copy()
-                                
+                                ipdb.set_trace()
                                 for key, value in copy_diff_dict.items():
                                     
                                     if value >= 0:
                                         del difference_dict[key]                                                                                                  
-                                
+                                ipdb.set_trace()
+
                                 if len(difference_dict) > 0:
+                                    ipdb.set_trace()
                                     closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
                                     if closest_end_date < newStartDate < cv.end_date:
                                         print(f'''
@@ -466,10 +472,12 @@ class CLI():
                                                                         ><><><><><><><><><><><><><><><><><><><><><><
                                             ''')
                                         cv.start_date = newStartDate
+                                        ipdb.set_trace()
                                         session.commit()
                                     else:
                                         raise ValueError
                                 elif(len(difference_dict) == 0):
+                                    ipdb.set_trace()
                                     if newStartDate < cv.end_date:
                                         print(f'''                                      
                                                                         ><><><><><><><><><><><><><><><><><><><><><><
@@ -482,7 +490,6 @@ class CLI():
                                     raise ValueError
 
                             except:
-                                os.system('cls' if os.name == 'nt' else 'clear')
                                 print("")
                                 print('                                         PLEASE ENTER A VALID DATE!')
                                 print("")
@@ -493,7 +500,7 @@ class CLI():
                         while True:
                             try:
                                 os.system('cls' if os.name == 'nt' else 'clear')
-                                vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date.desc())
+                                vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date)
                                 print("")
                                 print("                                This location currently has other reservations during: ")
                                 print("")
@@ -514,7 +521,7 @@ class CLI():
 
                                 difference_dict = {}
                                 for date in [v.start_date for v in vac_by_cvd]:
-                                    difference_dict[date] = (date-newEndDate).days
+                                    difference_dict[date] = (date-cv.end_date).days
 
                                 copy_diff_dict = difference_dict.copy()
                                 
@@ -526,9 +533,10 @@ class CLI():
                                 if len(difference_dict) > 0:
                                     closest_start_date = min(difference_dict, key = lambda val: difference_dict[val])
                                     if closest_start_date > newEndDate > cv.start_date:
-                                        print(f'''                                      ><><><><><><><><><><><><><><><><><
+                                        print(f'''                                      
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
                                                                         Here is your new end date: {newEndDate}
-                                                                                        ><><><><><><><><><><><><><><><><><
+                                                                        ><><><><><><><><><><><><><><><><><><><><><><
                                             ''')
                                         cv.end_date = newEndDate
                                         session.commit()
@@ -546,10 +554,10 @@ class CLI():
                                 else:
                                     raise ValueError
                             except:
-                                os.system('cls' if os.name == 'nt' else 'clear')
                                 print("")
                                 print('                                PLEASE ENTER A VALID DATE!')
                                 print("")
+                                time.sleep(2)
                                 continue
                             else:
                                 break
@@ -579,27 +587,43 @@ class CLI():
                             if vcount == len(d.vacations):
                                 available_domiciles.append(d)
                         # If you enter something other than a property number, the program crashes
-                        print("                                                 Available Properties:")
-                        for i, d in enumerate(available_domiciles):
-                            print(f'''                                
-                                                                      --------------------------------------------------------------------------
-                                                                        {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}')
-                                                                      --------------------------------------------------------------------------
-                            ''') 
-                        new_dom = input('''
-                                                                         Please enter the number of the property you would like to switch to: 
-                        ''')
-                        
-                        dom_pre_change = tuple([d for d in CLI.domiciles if d.id == cv.Domicile_id])
+                        while True:
+                            try:
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                print('''                   
 
-                        if int(new_dom) in range(1, len(available_domiciles)+1):
-                            new_property = available_domiciles[int(new_dom)-1]
-                            cv.Domicile_id = new_property.id
-                            cv.name = new_property.name
-                            session.commit()
 
-                            print(f"                                Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}")
+                                                                                            Available Properties:
                             
+                                ''')
+                                for i, d in enumerate(available_domiciles):
+                                    print(f'''                                
+                                                                --------------------------------------------------------------------------
+                                                                {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}
+                                                                --------------------------------------------------------------------------
+                                    ''') 
+                                new_dom = input('''
+                                                                    Please enter the number of the property you would like to switch to: 
+                                ''')
+                                dom_pre_change = tuple([d for d in CLI.domiciles if d.id == cv.Domicile_id])
+
+                                if int(new_dom) in range(1, len(available_domiciles)+1):
+                                    new_property = available_domiciles[int(new_dom)-1]
+                                    cv.Domicile_id = new_property.id
+                                    cv.name = new_property.name
+                                    session.commit()
+
+                                    print(f"                                Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}")
+                                    break
+                            except:
+                                print('''
+                                
+                                                                  Please make sure to enter one of the numbers associated with a property!
+                                
+                                ''')
+                                time.sleep(2)
+                                continue
+
                 elif update_action.lower() == 'd': 
                     session.delete(cv)
                     session.commit()
@@ -616,7 +640,9 @@ class CLI():
                             finally:
                                 print("                                --------------------------------------------------------------------------")
                     else:
-                        print("No vacations booked yet!")
+                        print('''
+                                              No vacations booked yet!
+                        ''')
         else:
             print(''')
 
