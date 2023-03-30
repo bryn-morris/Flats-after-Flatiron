@@ -91,7 +91,7 @@ class CLI():
                 pastVacations = [v for v in CLI.vacations if v.Domicile_id  == dp.id]
                 for v in pastVacations:
                     print(f"{history_count}. {v.traveler.first_name} {v.traveler.last_name}")
-                    print(f"     Reason for visit: {v.rsn_for_visit}")
+                    print(f"   Reason for visit: {v.rsn_for_visit}")
                     history_count += 1
         
     def book(self):

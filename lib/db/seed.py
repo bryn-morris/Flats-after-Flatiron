@@ -58,8 +58,28 @@ if __name__ == '__main__':
                          "p_type": "Barrel", 
                          },{"sc": random.randint(10,30),
                          "p_type": "Castle", 
+                         },{"sc": random.randint(2,5),
+                         "p_type": "Cottage", 
+                         },{"sc": random.randint(1,2),
+                         "p_type": "Yurt", 
+                         },{"sc": random.randint(5,9),
+                         "p_type": "Mansion", 
+                         },{"sc": random.randint(3,5),
+                         "p_type": "Farmhouse", 
                          } 
                         ]
+    
+    amenities_list= (
+                    "There is a kitchen somewhere around here...",
+                    "Waterpark but it's filled with snakes",
+                    "A duck pond but all of the ducks have a taste for human flesh",
+                    "Greg",
+                    "Sometimes at night you can hear whispers on the wind...",
+                    "The nearby town only appears every 100 years!",
+                    "A dark, cozy hole to sleep in",
+                    "Electic Jello",
+                    "A musty old library nobody ever comes out of"
+                    )
 
     n = 0
     sample_domiciles = []
@@ -68,11 +88,9 @@ if __name__ == '__main__':
 
         random_property = random.choice(sample_properties)
 
-# Need to update Amenties into list that is randomly generated
-
         sample_domiciles.append({"dest_location": faker.city(),
                          "sleep_capacity": random_property["sc"], 
-                         "local_amenities": "SAMPLE",
+                         "local_amenities": random.choice(amenities_list),
                          "property_type": random_property["p_type"]})
         n += 1
 
@@ -101,20 +119,6 @@ if __name__ == '__main__':
     while k <= 15:
         sample_vacation_dates.append(str(faker.date_between_dates(date_start=datetime(2021,1,1), date_end=datetime(2024,12,31)))) 
         k += 1
-
-    # sample_vacation_dates = [{"ed": date.fromisoformat("2018-06-07"),
-    #                         "sd": date.fromisoformat("2018-05-20"), 
-    #                         },{"ed": date.fromisoformat("2022-09-16"),
-    #                         "sd": date.fromisoformat("2022-09-14"), 
-    #                         },{"ed": date.fromisoformat("2023-02-03"),
-    #                         "sd": date.fromisoformat("2022-12-02"), 
-    #                         },{"ed": date.fromisoformat("2020-05-16"),
-    #                         "sd": date.fromisoformat("2020-05-03"), 
-    #                         },{"ed": date.fromisoformat("2021-08-19"),
-    #                         "sd":date.fromisoformat("2021-08-01")},
-    #                         {"ed": date.fromisoformat("2022-06-12"),
-    #                         "sd":date.fromisoformat("2022-06-03")},
-    #                         ]
 
     reason_table = [
         "Running from the spider in my room : (",

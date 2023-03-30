@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from faker import Faker
+from faker.providers import lorem
 from datetime import datetime,date, timedelta
 import random
 
