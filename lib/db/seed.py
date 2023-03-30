@@ -115,12 +115,19 @@ if __name__ == '__main__':
         #maybe make the name unique? 
         random_property = random.choice(sample_properties)
 
-        sample_domiciles.append({ "name": random_property["name"],
-                         "dest_location": faker.city(),
-                         "sleep_capacity": random_property["sc"], 
-                         "local_amenities": random.choice(amenities_list),
-                         "property_type": random_property["p_type"]})
-        n += 1
+        if random_property["p_type"] != "Space Shuttle":
+            sample_domiciles.append({ "name": random_property["name"],
+                            "dest_location": faker.city(),
+                            "sleep_capacity": random_property["sc"], 
+                            "local_amenities": random.choice(amenities_list),
+                            "property_type": random_property["p_type"]})
+            n += 1
+        else:
+            sample_domiciles.append({ "name": random_property["name"],
+                            "dest_location": "Space!",
+                            "sleep_capacity": random_property["sc"], 
+                            "local_amenities": random.choice(amenities_list),
+                            "property_type": random_property["p_type"]})
 
     # Creating Domicile Instances
 
@@ -129,6 +136,7 @@ if __name__ == '__main__':
     for dom in sample_domiciles:
     
         newDomicile = Domicile(
+            name = dom["name"],
             dest_location = dom["dest_location"],
             sleep_capacity = dom["sleep_capacity"],
             local_amenities = dom["local_amenities"],
