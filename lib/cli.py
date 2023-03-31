@@ -245,31 +245,10 @@ class CLI():
     def book(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         date_format = '%Y-%m-%d'
-# not able to exit out of date entry loop without terminating terminal
-        # accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
-
         while True:
             try:
                 os.system('cls' if os.name == 'nt' else 'clear')
-            #     usersd= input("When would you like your vacation to start?")
-            #     for date_format in accepted_date_formats:
-            #         try:
-            #             start_date = datetime.strptime(usersd, accepted_date_formats).strftime('%Y-%m-%d')
-            #         except ValueError:
-            #             pass
-            #         else:
-            #             break
-            #     print(f"Here is your start date: {start_date}")
-            # except:
-            #     print('Please enter a valid date!(YYYY-MM-DD)')
-            #     continue
-            # else:
-            #     break
-
-# Fancy up and refactor
                 start_date = input("When would you like your vacation to start? (YYYY-MM-DD) ")
-# We need to provide an example of the date input format or make it so how the
-# user formats their date doesnt matter
                 startDate = datetime.datetime.strptime(start_date, date_format).date()
                 print('')
                 print("><><><><><><><><><><><><><><><><><")
