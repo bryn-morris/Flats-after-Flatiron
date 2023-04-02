@@ -219,7 +219,7 @@ def book(self):
                                                 ''')
                     
 
-                                session.add(Vacation(startDate, endDate, most_recent_trav.id, dp.id, rsn_response))
+                                session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id, rsn_response))
                                 session.commit()
                                 print('''
 
