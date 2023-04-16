@@ -117,7 +117,10 @@ def browse(self):
         ·····························································································································
         ·····························································································································
                             ''') 
-                                        break
+                                        # Make button to return to main menu
+                                        # past_res_input = input("Where to next?")
+                                        # if past_res_input.lower() == 'x':
+                                        #     return
                                 
                             except:
                                 print('''
@@ -127,7 +130,7 @@ def browse(self):
                                 ''')
                                 time.sleep(1)
                                 continue
-                       
+                    # Refactor this using types of errors into one try...except statement  
                     except:
                         print('''
                                 Please make sure to enter a number associated with a property!
@@ -139,5 +142,6 @@ def browse(self):
                                                   Please make sure to enter a number!            
                 ''')
                 time.sleep(2)
-                continue
-            break
+            else:
+                break
+            

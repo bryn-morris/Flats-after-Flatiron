@@ -2,7 +2,7 @@ import os, ipdb, time
 from sqlalchemy import create_engine
 from db.models import Base, Domicile
 from sqlalchemy.orm import sessionmaker
-from color_class import color
+from main_menu.color_class import color
 from db.models import Vacation
 
 engine = create_engine("sqlite:///lib/db/project.db")
