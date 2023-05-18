@@ -14,7 +14,6 @@ def browse(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         all_dom = session.query(Domicile).all()
         
-        
         while True:
             try:
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -46,12 +45,9 @@ def browse(self):
                                 ''')
                 if detailPropID.lower() == 'x':
                         break
-                if int(detailPropID) in range(-9999999999999999999, 999999999999999999999999):
-                    try:
+                if int(detailPropID) in range(1, len(all_dom) + 1):
                         while True:
                             try:
-                             
-                                if int(detailPropID) in range(1, len(all_dom) + 1):
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     
                                     dp = all_dom[int(detailPropID) - 1]
@@ -117,10 +113,7 @@ def browse(self):
         ·····························································································································
         ·····························································································································
                             ''') 
-                                        # Make button to return to main menu
-                                        # past_res_input = input("Where to next?")
-                                        # if past_res_input.lower() == 'x':
-                                        #     return
+                                        break
                                 
                             except:
                                 print('''
@@ -130,18 +123,12 @@ def browse(self):
                                 ''')
                                 time.sleep(1)
                                 continue
-                    # Refactor this using types of errors into one try...except statement  
-                    except:
-                        print('''
-                                Please make sure to enter a number associated with a property!
-                        ''')
-                        time.sleep(2)
-                        continue            
+                else:
+                    raise ValueError    
             except:
                 print('''
-                                                  Please make sure to enter a number!            
+                        Please make sure to enter a number associated with a property!
                 ''')
                 time.sleep(2)
-            else:
-                break
-            
+                continue 
+            break

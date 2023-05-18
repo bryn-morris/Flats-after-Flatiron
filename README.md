@@ -124,27 +124,13 @@ welcome_images = a tuple storing ASCII art representing several different domici
 
 This debug is a sandbox file used only for the purposes of debugging and query selection
 
-### What Goes into a README?
+### Things I am still working on
 
-This README should serve as a template for your own- go through the important
-files in your project and describe what they do. Each file that you edit
-(you can ignore your Alembic files) should get at least a paragraph. Each
-function should get a small blurb.
+Phase 3 Project Changes:
 
-You should descibe your actual CLI script first, and with a good level of
-detail. The rest should be ordered by importance to the user. (Probably
-functions next, then models.)
+> Add lists to tables in DB
 
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+> Refactor much of the Python Logic into session.query & Alembic Requests. Specifically in regards to how objects are filtered (Lower Memory Usage!)
 
-## Team Notes
-
-- should we refactor our CLI functions out...
-- can we include our whimsicle organization?
-
-- still need to finish:
-  CLI functions
-  helpers
-  debug
+> Refactor to remove __init__ 
+     > when instantiating an object use name of              column = value to bypass inits
