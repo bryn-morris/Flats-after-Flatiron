@@ -12,28 +12,11 @@ session = Session()
 def book(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         date_format = '%Y-%m-%d'
-        # not able to exit out of date entry loop without terminating terminal
-        # accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
+        accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
 
         while True:
             try:
                 os.system('cls' if os.name == 'nt' else 'clear')
-            #     usersd= input("When would you like your vacation to start?")
-            #     for date_format in accepted_date_formats:
-            #         try:
-            #             start_date = datetime.strptime(usersd, accepted_date_formats).strftime('%Y-%m-%d')
-            #         except ValueError:
-            #             pass
-            #         else:
-            #             break
-            #     print(f"Here is your start date: {start_date}")
-            # except:
-            #     print('Please enter a valid date!(YYYY-MM-DD)')
-            #     continue
-            # else:
-            #     break
-
-# Fancy up and refactor
                 start_date = input('''
                  
         *****************************************************************************************************************************       
@@ -44,15 +27,19 @@ def book(self):
                                                                   [[Type 'X']]
 
                                         ******************************************************************
-                                            When would you like your vacation to start? (YYYY-MM-DD)
+                                            When would you like your vacation to start? 
                                         ******************************************************************
 
                 ''')
-# We need to provide an example of the date input format or make it so how the
-# user formats their date doesnt matter
                 if start_date.lower() == 'x':
                     return
-                startDate = datetime.datetime.strptime(start_date, date_format).date()
+                for date_format in accepted_date_formats:
+                    try:
+                        startDate = datetime.datetime.strptime(start_date, date_format).date()
+                    except ValueError:
+                        pass
+                    else:
+                        break
                 print(f'''
                                         ******************************************************************
                                                         Here is your start date: {startDate}
@@ -78,7 +65,13 @@ def book(self):
                 ''')
                 if end_date.lower() == 'x':
                     return
-                testEndDate = datetime.datetime.strptime(end_date, date_format).date()
+                for date_format in accepted_date_formats:
+                    try:
+                        testEndDate = datetime.datetime.strptime(end_date, date_format).date()
+                    except ValueError:
+                        pass
+                    else:
+                        break
                 if testEndDate < startDate:
                     raise ValueError
                 else:
@@ -249,7 +242,7 @@ def book(self):
             except:
                 print('''
                                         ******************************************************************
-                                            ╰༼=ಠਊಠ=༽╯    Please enter a valid number!    ╰༼=ಠਊಠ=༽╯
+                                            ╰༼=ಠਊಠ=༽╯    Please enter a valid selection!    ╰༼=ಠਊಠ=༽╯
                                         ******************************************************************
                 ''')
                 time.sleep(2)
