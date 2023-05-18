@@ -86,10 +86,11 @@ def browse(self):
                                     elif viewPastBookings.lower() == 'v':
                                         break
                                     elif viewPastBookings.lower() == 'b':
-                                        os.system('cls' if os.name == 'nt' else 'clear')
-                                        # pastVacations = [v for v in all_dom if v.id  == dp.id]
-                                        pastVacations = session.query(Vacation).filter_by(Domicile_id = dp.id)
-                                        print(f'''
+                                        while True:
+                                            os.system('cls' if os.name == 'nt' else 'clear')
+                                            # pastVacations = [v for v in all_dom if v.id  == dp.id]
+                                            pastVacations = session.query(Vacation).filter_by(Domicile_id = dp.id)
+                                            print(f'''
         ·····························································································································
         ·····························································································································
 
@@ -99,21 +100,29 @@ def browse(self):
                                                                                                 
                             ''')
                                     
-                                        print(f'                                                            {color.BOLD}  {dp.name}  {color.END}')
-                                        print('                            ························································································')
-                                        for v in pastVacations:
-                                            print(f''' 
-                                  ···········································································
-                                            {v.traveler.first_name.capitalize()} {v.traveler.last_name.capitalize()}
-                                                Reason for visit: {v.rsn_for_visit}
-                                  ···········································································
-                                            ''')                                  
-                                        print('''
-                    
-        ·····························································································································
-        ·····························································································································
-                            ''') 
-                                        break
+                                            print(f'                                                            {color.BOLD}  {dp.name}  {color.END}')
+                                            print('                            ························································································')
+                                            for v in pastVacations:
+                                                print(f''' 
+                                    ···········································································
+                                                {v.traveler.first_name.capitalize()} {v.traveler.last_name.capitalize()}
+                                                    Reason for visit: {v.rsn_for_visit}
+                                    ···········································································
+                                                ''')                                  
+                                            exitInput = input('''
+                        
+                                                  Return to Property                        To Exit 
+                                                      [[Type 'V']]                        [[Type 'X']]                             
+                                            
+            ·····························································································································
+            ·····························································································································
+                                ''')
+                                            if exitInput.lower() == 'x':
+                                                 return
+                                            elif exitInput.lower() == 'v':
+                                                 break
+                                    else:
+                                         raise ValueError
                                 
                             except:
                                 print('''
@@ -123,7 +132,7 @@ def browse(self):
                                 ''')
                                 time.sleep(1)
                                 continue
-                        # This continue is here to send us back to the upper loop from the inner loop
+                        # This continue is here to send us back to the outer loop from the inner loop
                         continue
                 else:
                     raise ValueError    
