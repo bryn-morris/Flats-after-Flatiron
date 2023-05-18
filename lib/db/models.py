@@ -19,17 +19,16 @@ class Traveler(Base):
     last_name = Column(String())
     location = Column(String())
 
-    def __init__(self, first_name, last_name, location):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.location = location
+    # def __init__(self, first_name, last_name, location):
+    #     self.first_name = first_name
+    #     self.last_name = last_name
+    #     self.location = location
 
     def __repr__(self):
         return f"id = {self.id}," \
                 + f"name = {self.first_name} {self.last_name}," \
                 + f"location = {self.location}"
     
-    #Avoiding using Table
     vacations = relationship("Vacation", backref = "traveler")
     domiciles = association_proxy("vacations", "domicile",
                                   creator = lambda dm: Vacation(domicile = dm))
@@ -50,12 +49,12 @@ class Domicile(Base):
     # price = Column(Integer())
     property_type = Column(String())
     
-    def __init__(self, name, dest_location, sleep_capacity, local_amenities, property_type):
-        self.name = name
-        self.dest_location = dest_location
-        self.sleep_capacity = sleep_capacity
-        self.local_amenities = local_amenities
-        self.property_type = property_type
+    # def __init__(self, name, dest_location, sleep_capacity, local_amenities, property_type):
+    #     self.name = name
+    #     self.dest_location = dest_location
+    #     self.sleep_capacity = sleep_capacity
+    #     self.local_amenities = local_amenities
+    #     self.property_type = property_type
 
     # Avaliabilty as a method?
 
@@ -85,12 +84,12 @@ class Vacation(Base):
     Domicile_id = Column(Integer(),ForeignKey('Domiciles.id'))
     rsn_for_visit = Column(String())
 
-    def __init__(self, start_date, end_date, Traveler_id, Domicile_id, rsn_for_visit=""):
-        self.start_date = start_date
-        self.end_date = end_date
-        self.Traveler_id = Traveler_id
-        self.Domicile_id = Domicile_id
-        self.rsn_for_visit = rsn_for_visit
+    # def __init__(self, start_date, end_date, Traveler_id, Domicile_id, rsn_for_visit=""):
+    #     self.start_date = start_date
+    #     self.end_date = end_date
+    #     self.Traveler_id = Traveler_id
+    #     self.Domicile_id = Domicile_id
+    #     self.rsn_for_visit = rsn_for_visit
 
     def __repr__(self):
         return f"id = {self.id}," \

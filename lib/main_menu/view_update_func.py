@@ -12,7 +12,6 @@ session = Session()
 def view_update(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         # Make past bookings visible/button option for each vacation in my profile
-        # Make looks nicer and similar to previous screens
         all_dom = session.query(Domicile).all()
         
         print(f'''

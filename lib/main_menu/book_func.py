@@ -211,12 +211,14 @@ def book(self):
                                 
                                         ········································································
                                             {self.trav_obj.first_name} {self.trav_obj.last_name}
-                                                Reason for visit: 
-                                        ········································································
+                                                Reason for visit: ''')
+                                
+                                print('''                                        ········································································
                                                   
 
                                                               
                                                 ''')
+                                time.sleep(1)
                     
 
                                 session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id, rsn_response))
