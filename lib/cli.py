@@ -19,13 +19,6 @@ class CLI():
     domiciles = session.query(Domicile).all()
 
     travelers = [traveler for traveler in session.query(Traveler)]
-    
-    # lower_trav = []
-
-    # for traveler in travelers:
-    #     traveler.first_name = traveler.first_name.lower()
-    #     traveler.last_name = traveler.last_name.lower()
-    #     lower_trav.append(traveler)
 
     vacations = session.query(Vacation).all()
 
@@ -34,16 +27,14 @@ class CLI():
         self.last_name = user_ln
         self.city = user_city
         self.traveler()
+
         print('''            
             
             ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
             ''')
-            # Not working - if first name OR last name matches, it registers as user already registered, need to take a look at logic - 
-            #  don't touch strings currently they line up with main menu
-        print(f'                         ><><><><><><><><><><><><>    WELCOME TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
-                # if (self.trav_obj.first_name.lower() not in [trav.first_name for trav in CLI.lower_trav]) and (self.trav_obj.last_name.lower() not in [trav.last_name for trav in CLI.lower_trav]) 
-                # else f'                         ><><><><><><><><><><><><>    WELCOME BACK TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><'
-                )
+        
+        print(f'                         ><><><><><><><><><><><><>    WELCOME {"BACK " if self.comparison_func() else ""}TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
+        
         print('''
             ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
@@ -51,6 +42,11 @@ class CLI():
         time.sleep(3)
         os.system('cls' if os.name == 'nt' else 'clear')
         self.start()
+
+    def comparison_func(self):
+        
+        return any(trav.first_name == self.first_name and trav.last_name == self.last_name for trav in CLI.travelers)
+        
 
     def traveler(self):
         for t in CLI.travelers:
@@ -68,7 +64,6 @@ class CLI():
         exit = False
         while exit == False:
 
-                # use this to clear the command line interface to make "screens"
             os.system('cls' if os.name == 'nt' else 'clear')
             choice = input(f'''
 
@@ -93,7 +88,6 @@ class CLI():
             ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
             ''')
             
-
             if choice.lower() == 'b':
                 book(self)
             elif choice.lower() == 'v':

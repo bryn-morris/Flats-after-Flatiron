@@ -26,8 +26,6 @@ def browse(self):
         
         ''')
 
-#Unable to pull up "Where to go from here menu" from here
-
                 for i, d in enumerate(all_dom):
                     print(f'''
                     ········································································································
