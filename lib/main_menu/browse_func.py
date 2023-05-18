@@ -123,6 +123,8 @@ def browse(self):
                                 ''')
                                 time.sleep(1)
                                 continue
+                        # This continue is here to send us back to the upper loop from the inner loop
+                        continue
                 else:
                     raise ValueError    
             except:
