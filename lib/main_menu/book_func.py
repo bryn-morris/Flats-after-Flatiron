@@ -187,9 +187,6 @@ def book(self):
                                 raise NameError
                             elif book_prop.lower() == 'b':
                                 rsn_response = input(f'''
-                                
-
-
                                         ************************************************************************
 
                                                                 *****************
@@ -207,14 +204,16 @@ def book(self):
                                                 Reason for visit: ''')
                                 
                                 print('''                                        ········································································
-                                                  
-
-                                                              
+                                                                                                              
                                                 ''')
                                 time.sleep(1)
                     
 
-                                session.add(Vacation(startDate, endDate, self.trav_obj.id, dp.id, rsn_response))
+                                session.add(Vacation(start_date = startDate,
+                                                     end_date = endDate,
+                                                     Traveler_id = self.trav_obj.id,
+                                                     Domicile_id = dp.id,
+                                                     rsn_for_visit = rsn_response))
                                 session.commit()
                                 print('''
 

@@ -54,7 +54,11 @@ class CLI():
                 self.trav_obj= t
                 return None
             
-        new_traveler = Traveler(self.first_name, self.last_name, self.city)
+        new_traveler = Traveler(
+            first_name = self.first_name,
+            last_name = self.last_name,
+            location = self.city,
+        )
         session.add(new_traveler)
         session.commit()
         self.trav_obj = new_traveler
@@ -97,12 +101,12 @@ class CLI():
 
             user_input = input('''
              
-                                        vvvvvvvvvvvvvvvvvvvvvvvvvv  Where to Next?  vvvvvvvvvvvvvvvvvvvvvvvvvv
+                                     vvvvvvvvvvvvvvvvvvvvvvvvvv  Where to Next?  vvvvvvvvvvvvvvvvvvvvvvvvvv
 
-                                                                      （＾ω＾）                                                                   
+                                                                     ＾ω＾）                                                                   
                            
-                                           Title Menu                                            Main Menu
-                                          [[Type 'T']]                                          [[Type 'M']]
+                                        Title Menu                                            Main Menu
+                                       [[Type 'T']]                                          [[Type 'M']]
                                         
             ''')
             time.sleep(1)
