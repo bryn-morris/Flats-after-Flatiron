@@ -1,5 +1,3 @@
-<!-- All team notes at the bottom with the README guidance from the CLI project template! -->
-
 # Flats after Flatiron
 
 ## Collaborators: Bryn Morris, Calvin Atkeson, & Grace Nieboer
@@ -19,7 +17,7 @@ The program allows a user to "log in" to Flats After FlatIron and manage their t
 ## Languages
 
 Python
-SQL
+SQLAlchemy
 
 ## Program Composition
 
@@ -124,13 +122,6 @@ welcome_images = a tuple storing ASCII art representing several different domici
 
 This debug is a sandbox file used only for the purposes of debugging and query selection
 
-### Things I am still working on
+### ASCII_ART
 
-Phase 3 Project Changes:
-
-> Add lists to tables in DB
-
-> Refactor much of the Python Logic into session.query & Alembic Requests. Specifically in regards to how objects are filtered (Lower Memory Usage!)
-
-> Refactor to remove __init__ 
-     > when instantiating an object use name of              column = value to bypass inits
+This file is used to house the various ascii art pulled from https://emojicombos.com and https://ascii.co.uk/art. This is used to store the images in the Main Menu.
