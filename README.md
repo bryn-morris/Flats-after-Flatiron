@@ -1,23 +1,43 @@
 # Flats after Flatiron
 
-## Collaborators: Bryn Morris, Calvin Atkeson, & Grace Nieboer
-
-## Introduction
+## Description
 
 This is a Command Line Interface program created during Phase III of Flatiron School's Full Stack Software Engineering Program.
+
+## Installation
+
+This Program was built using pipenv and has the requisite libraries stored in the Pipfile. As such, to install the dependencies required to run the project, 
+run the following from the main project directory:
+
+      pipenv install && pipenv shell
+
+This will install the necessary dependencies and create an active encironment within a new shell.
+
+Finally, enter the main_manu directory and run the following to start the program:
+
+      python ./lib/cli.py
+
+### Project Design
 
 This program is a reservations solution for travel lovers!
 The program allows a user to "log in" to Flats After FlatIron and manage their travel plans. Basic user solutions include:
 
 1. Browsing available destinations
-2. Book a travel reservation
-3. Manage current reservation information
+2. Booking a travel reservation
+3. Managing & Deleting current reservation information
 4. Update user's "profile" information
 
-## Languages
+### Languages
 
 Python
+Pipenv
 SQLAlchemy
+
+## Collaborators: 
+
+#### [Bryn Morris](https://github.com/bryn-morris)
+#### [Calvin Atkeson](https://github.com/catkeson123) 
+#### [Grace Nieboer](https://github.com/gnieb) 
 
 ## Program Composition
 
@@ -125,3 +145,4 @@ This debug is a sandbox file used only for the purposes of debugging and query s
 ### ASCII_ART
 
 This file is used to house the various ascii art pulled from https://emojicombos.com and https://ascii.co.uk/art. This is used to store the images in the Main Menu.
+
