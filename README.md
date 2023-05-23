@@ -16,6 +16,7 @@ The program allows a user to "log in" to Flats After FlatIron and manage their t
 
 ### Languages
 
+Linux - Ubuntu
 Python
 SQLAlchemy
 
