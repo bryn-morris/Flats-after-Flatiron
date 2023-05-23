@@ -17,7 +17,6 @@ The program allows a user to "log in" to Flats After FlatIron and manage their t
 ### Languages
 
 Python
-Pipenv
 SQLAlchemy
 
 ## Collaborators: 
