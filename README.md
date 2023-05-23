@@ -4,19 +4,6 @@
 
 This is a Command Line Interface program created during Phase III of Flatiron School's Full Stack Software Engineering Program.
 
-## Installation
-
-This Program was built using pipenv and has the requisite libraries stored in the Pipfile. As such, to install the dependencies required to run the project, 
-run the following from the main project directory:
-
-      pipenv install && pipenv shell
-
-This will install the necessary dependencies and create an active encironment within a new shell.
-
-Finally, enter the main_manu directory and run the following to start the program:
-
-      python ./lib/cli.py
-
 ### Project Design
 
 This program is a reservations solution for travel lovers!
@@ -38,6 +25,19 @@ SQLAlchemy
 #### [Bryn Morris](https://github.com/bryn-morris)
 #### [Calvin Atkeson](https://github.com/catkeson123) 
 #### [Grace Nieboer](https://github.com/gnieb) 
+
+## Installation
+
+This Program was built using pipenv and has the requisite libraries stored in the Pipfile. As such, to install the dependencies required to run the project, 
+run the following from the main project directory:
+
+      pipenv install && pipenv shell
+
+This will install the necessary dependencies and create an active encironment within a new shell.
+
+Finally, enter the main_manu directory and run the following to start the program:
+
+      python ./lib/cli.py
 
 ## Program Composition
 
