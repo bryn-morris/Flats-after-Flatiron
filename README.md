@@ -27,7 +27,7 @@ SQLAlchemy
 
 ## Installation
 
-This Program was built using pipenv and has the requisite libraries stored in the Pipfile. As such, to install the dependencies required to run the project, 
+This application was built using pipenv and has the requisite libraries stored in the Pipfile. As such, to install the dependencies required to run the project, 
 run the following from the main project directory:
 
       pipenv install && pipenv shell
