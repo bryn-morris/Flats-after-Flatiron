@@ -27,7 +27,7 @@ def book(self):
                                                                   [[Type 'X']]
 
                                         ******************************************************************
-                                            When would you like your vacation to start? (YYYY-MM-DD)
+                                            When would you like your vacation to start? 
                                         ******************************************************************
 
                 ''')

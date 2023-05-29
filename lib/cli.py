@@ -9,18 +9,13 @@ from main_menu.book_func import book
 from main_menu.color_class import color
 from main_menu.view_update_func import view_update
 
-
 engine = create_engine("sqlite:///lib/db/project.db")
 Session = sessionmaker(bind=engine)
 session = Session()
 
 class CLI():
-    
-    domiciles = session.query(Domicile).all()
 
     travelers = [traveler for traveler in session.query(Traveler)]
-
-    vacations = session.query(Vacation).all()
 
     def __init__(self, user_fn, user_ln, user_city):
         self.first_name = user_fn
@@ -64,7 +59,6 @@ class CLI():
         self.trav_obj = new_traveler
     
     def start(self):
-        
         exit = False
         while exit == False:
 

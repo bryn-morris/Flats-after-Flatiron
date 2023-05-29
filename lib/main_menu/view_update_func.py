@@ -36,8 +36,11 @@ def view_update(self):
 
                                                                                                 
         ''')
-
-        my_vacations = [v for v in self.trav_obj.vacations]
+        #Do I need to query within this session context? - self.trav_obj.id filter 
+        # Check line 82, querying using session may be causing the problem as trav obj was queried
+        # within a different session context in CLI
+        my_vacations = [v for v in session.query(Vacation).filter(Vacation.Traveler_id == self.trav_obj.id)]
+        # my_vacations = [v for v in self.trav_obj.vacations]
         if len(my_vacations) > 0:
             for i, v in enumerate(my_vacations):
                 print(f"                                        {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
@@ -46,18 +49,18 @@ def view_update(self):
             print('')
             if edit.lower() == 'y':
                 while True:
-                    os.system('cls' if os.name == 'nt' else 'clear')
                     try:
                         if len(my_vacations) > 1:
-                            chosen_vaca = input("                                Type the number of the vacation you'd like to edit/delete ")
+                            chosen_vaca = input("                                        Type the number of the vacation you'd like to edit/delete ")
                             print('')
 
                             if int(chosen_vaca) in range(1, len(my_vacations) + 1):
                                 cv = my_vacations[int(chosen_vaca) - 1]
                                 
                         elif len(my_vacations) == 1:
-                            cv = my_vacations[0]
                             
+                            cv = my_vacations[0]
+                        os.system('cls' if os.name == 'nt' else 'clear')    
                         print(f'''                     
                                                         ><><><><><><><><><><><><><><><><><
 
@@ -117,7 +120,6 @@ def view_update(self):
                                                         ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.start_date = newStartDate
-                                                session.merge(cv)
                                                 session.commit()
                                             else:
                                                 raise ValueError
@@ -130,7 +132,6 @@ def view_update(self):
                                                     ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.start_date = newStartDate
-                                                session.merge(cv)
                                                 session.commit()
                                                 time.sleep(1)
                                         else:
@@ -186,7 +187,6 @@ def view_update(self):
                                                 ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.end_date = newEndDate
-                                                session.merge(cv)
                                                 session.commit()
                                             else:
                                                 raise ValueError
@@ -198,7 +198,6 @@ def view_update(self):
                                                 ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.end_date = newEndDate
-                                                session.merge(cv)
                                                 session.commit()
                                         else:
                                             raise ValueError
@@ -247,7 +246,6 @@ def view_update(self):
                                             new_property = available_domiciles[int(new_dom)-1]
                                             cv.Domicile_id = new_property.id
                                             cv.name = new_property.name
-                                            session.merge(cv)
                                             session.commit()
 
                                             print(f"                                Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}")
@@ -262,7 +260,6 @@ def view_update(self):
                                         continue
 
                         elif update_action.lower() == 'd': 
-                            ipdb.set_trace()
                             session.delete(cv)
                             session.commit()
                             print('                                Vacation deleted successfully!')
