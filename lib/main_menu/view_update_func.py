@@ -160,8 +160,7 @@ def view_update(self):
                                             print(f'''                                                      ><><><><><><><><><><><><><><><><><
                                                         {v.start_date} to {v.end_date}
                                             ''')
-                                    print("")
-                                    print('                                                    ><><><><><><><><><><><><><><><><><')    
+                                    print('                                                      ><><><><><><><><><><><><><><><><><')    
                                     print("")
                                     new_end_date = input("                                                  Please enter your new end date or x to exit: ")
                                     if new_end_date.lower() == "x":
@@ -188,6 +187,7 @@ def view_update(self):
                                                 ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                             cv.end_date = newEndDate
+                                            ipdb.set_trace()
                                             session.commit()
                                         else:
                                             raise ValueError
@@ -199,6 +199,7 @@ def view_update(self):
                                                 ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                             cv.end_date = newEndDate
+                                            ipdb.set_trace()
                                             session.commit()
                                     else:
                                         raise ValueError
