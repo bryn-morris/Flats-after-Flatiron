@@ -64,7 +64,7 @@ def view_update(self):
                         print(f'''                     
                                                         ><><><><><><><><><><><><><><><><><
 
-                                    Currently Editing Vacation: {cv.domicile.name}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}
+                                Currently Editing Vacation: {cv.domicile.name}, in {cv.domicile.dest_location} from {cv.start_date} - {cv.end_date}
                                                             
                                                             ''')
 
@@ -73,7 +73,7 @@ def view_update(self):
                         print('')
                         if update_action.lower() == 'u':
                             print("")
-                            edit_prop = input("                                     Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
+                            edit_prop = input("                                    Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property: ")
                             date_format = '%Y-%m-%d'
                             if edit_prop == '1':
                                 while True:
@@ -115,9 +115,9 @@ def view_update(self):
                                             closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
                                             if closest_end_date < newStartDate < cv.end_date:
                                                 print(f'''
-                                                        ><><><><><><><><><><><><><><><><><><><><><><
-                                                            Here is your new start date: {newStartDate}
-                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                                ><><><><><><><><><><><><><><><><><><><><><><
+                                                    Here is your new start date: {newStartDate}
+                                                ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.start_date = newStartDate
                                                 session.commit()
@@ -127,9 +127,9 @@ def view_update(self):
                                             
                                             if newStartDate < cv.end_date:
                                                 print(f'''                                      
-                                                    ><><><><><><><><><><><><><><><><><><><><><><
-                                                        Here is your new start date: {newStartDate}
-                                                    ><><><><><><><><><><><><><><><><><><><><><><
+                                                ><><><><><><><><><><><><><><><><><><><><><><
+                                                    Here is your new start date: {newStartDate}
+                                                ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.start_date = newStartDate
                                                 session.commit()
@@ -221,7 +221,6 @@ def view_update(self):
                                                 vcount += 1
                                     if vcount == len(d.vacations):
                                         available_domiciles.append(d)
-                                # If you enter something other than a property number, the program crashes
                                 while True:
                                     try:
                                         os.system('cls' if os.name == 'nt' else 'clear')
@@ -262,17 +261,20 @@ def view_update(self):
                         elif update_action.lower() == 'd': 
                             session.delete(cv)
                             session.commit()
+                            print('')
                             print('                                Vacation deleted successfully!')
+                            time.sleep(3)
+                            os.system('cls' if os.name == 'nt' else 'clear')
                             print('                                Your vacations:')
                             new_vacations = [v for v in self.trav_obj.vacations]
                             if len(new_vacations) > 0:
                                 for i, v in enumerate(new_vacations):
                                     print(f'''
-                                                                --------------------------------------------------------------------------
-                                                                        {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}
-                                                                --------------------------------------------------------------------------
+                                    --------------------------------------------------------------------------
+                                            {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}
+                                    --------------------------------------------------------------------------
                                     ''')
-                                time.sleep(3)
+                                
                             else:
                                 print('''
                                                     No vacations booked yet!
