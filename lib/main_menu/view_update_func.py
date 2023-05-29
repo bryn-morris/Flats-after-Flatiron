@@ -187,7 +187,6 @@ def view_update(self):
                                                 ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                             cv.end_date = newEndDate
-                                            ipdb.set_trace()
                                             session.commit()
                                         else:
                                             raise ValueError
@@ -199,7 +198,6 @@ def view_update(self):
                                                 ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                             cv.end_date = newEndDate
-                                            ipdb.set_trace()
                                             session.commit()
                                     else:
                                         raise ValueError
