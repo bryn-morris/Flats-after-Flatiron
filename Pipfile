@@ -8,7 +8,8 @@ ipdb = "*"
 sqlalchemy = "*"
 alembic = "*"
 faker = "15.0.0"
-
+pipenv = "*"
+shell = "*"
 
 [dev-packages]
 

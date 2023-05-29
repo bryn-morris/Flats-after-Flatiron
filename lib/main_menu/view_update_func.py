@@ -3,6 +3,7 @@ from db.models import Base, Vacation, Domicile
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import os, time, datetime 
+import ipdb
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Base.metadata.create_all(engine)
@@ -111,12 +112,12 @@ def view_update(self):
                                             closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
                                             if closest_end_date < newStartDate < cv.end_date:
                                                 print(f'''
-                                                                ><><><><><><><><><><><><><><><><><><><><><><
-                                                                Here is your new start date: {newStartDate}
-                                                                ><><><><><><><><><><><><><><><><><><><><><><
+                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                                            Here is your new start date: {newStartDate}
+                                                        ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.start_date = newStartDate
-                                                
+                                                session.merge(cv)
                                                 session.commit()
                                             else:
                                                 raise ValueError
@@ -124,11 +125,12 @@ def view_update(self):
                                             
                                             if newStartDate < cv.end_date:
                                                 print(f'''                                      
-                                                        ><><><><><><><><><><><><><><><><><><><><><><
-                                                            Here is your new start date: {newStartDate}
-                                                        ><><><><><><><><><><><><><><><><><><><><><><
+                                                    ><><><><><><><><><><><><><><><><><><><><><><
+                                                        Here is your new start date: {newStartDate}
+                                                    ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.start_date = newStartDate
+                                                session.merge(cv)
                                                 session.commit()
                                                 time.sleep(1)
                                         else:
@@ -179,22 +181,24 @@ def view_update(self):
                                             closest_start_date = min(difference_dict, key = lambda val: difference_dict[val])
                                             if closest_start_date > newEndDate > cv.start_date:
                                                 print(f'''                                      
-                                                    ><><><><><><><><><><><><><><><><><><><><><><
+                                                ><><><><><><><><><><><><><><><><><><><><><><
                                                     Here is your new end date: {newEndDate}
-                                                    ><><><><><><><><><><><><><><><><><><><><><><
+                                                ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.end_date = newEndDate
+                                                session.merge(cv)
                                                 session.commit()
                                             else:
                                                 raise ValueError
                                         elif(len(difference_dict) == 0):
                                             if newEndDate > cv.start_date:
                                                 print(f'''                                      
-                                                    ><><><><><><><><><><><><><><><><><><><><><><
+                                                ><><><><><><><><><><><><><><><><><><><><><><
                                                     Here is your new end date: {newEndDate}
-                                                    ><><><><><><><><><><><><><><><><><><><><><><
+                                                ><><><><><><><><><><><><><><><><><><><><><><
                                                     ''')
                                                 cv.end_date = newEndDate
+                                                session.merge(cv)
                                                 session.commit()
                                         else:
                                             raise ValueError
@@ -243,6 +247,7 @@ def view_update(self):
                                             new_property = available_domiciles[int(new_dom)-1]
                                             cv.Domicile_id = new_property.id
                                             cv.name = new_property.name
+                                            session.merge(cv)
                                             session.commit()
 
                                             print(f"                                Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}")
@@ -257,6 +262,7 @@ def view_update(self):
                                         continue
 
                         elif update_action.lower() == 'd': 
+                            ipdb.set_trace()
                             session.delete(cv)
                             session.commit()
                             print('                                Vacation deleted successfully!')
@@ -269,10 +275,12 @@ def view_update(self):
                                                                         {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}
                                                                 --------------------------------------------------------------------------
                                     ''')
+                                time.sleep(3)
                             else:
                                 print('''
                                                     No vacations booked yet!
                                 ''')
+                                time.sleep(3)
                         else:
                             raise ValueError
                         break
