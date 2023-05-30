@@ -62,16 +62,17 @@ def view_update(self):
                                 date_format = '%Y-%m-%d'
                                 vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date)
 
-                                if edit_prop == '1':
-                                    while True:
-                                        clear_screen()
-                                        try:  
+                                while True:
+                                    clear_screen()
+                                    try:
+                                        if edit_prop == '1':
+
                                             new_start_date = print_other_reservations(vac_by_cvd, cv, edit_prop)
                                             if new_start_date.lower() == "x":
                                                 break
                                             newStartDate = datetime.datetime.strptime(new_start_date, date_format).date()
 
-                                            difference_dict = {date: (date-cv.start_date).days for date in [v.end_date for v in vac_by_cvd] if (date-cv.start_date) >=0}
+                                            difference_dict = {date: (date-cv.start_date).days for date in [v.end_date for v in vac_by_cvd] if (date-cv.start_date) <= 0}
                                             closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
 
                                             if (len(difference_dict) > 0 and closest_end_date < newStartDate < cv.end_date) or (len(difference_dict) == 0 and newStartDate < cv.end_date):
@@ -81,31 +82,15 @@ def view_update(self):
                                                 time.sleep(1)
                                             else:
                                                 raise ValueError
-                                        except:
-                                            print_profile_date_error()
-                                            time.sleep(2)
-                                            continue
-                                        break
-                                elif edit_prop == '2':
-                                    while True:
-                                        try:
-                                            clear_screen()
+                                            
+                                        elif edit_prop == '2':
+
                                             new_end_date = print_other_reservations(vac_by_cvd, cv, edit_prop)
                                             if new_end_date.lower() == "x":
                                                 break
                                             newEndDate = datetime.datetime.strptime(new_end_date, date_format).date()
 
-                                            difference_dict = {}
-                                            for date in [v.start_date for v in vac_by_cvd]:
-                                                difference_dict[date] = (date-cv.end_date).days
-
-                                            copy_diff_dict = difference_dict.copy()
-                                            
-                                            for key, value in copy_diff_dict.items():
-                                                
-                                                if value < 0:
-                                                    del difference_dict[key]
-                                            
+                                            difference_dict = {date: (date-cv.end_date).days for date in [v.start_date for v in vac_by_cvd] if (date-cv.end_date).days >= 0}                                        
                                             closest_start_date = min(difference_dict, key = lambda val: difference_dict[val])
 
                                             if (len(difference_dict) > 0 and closest_start_date > newEndDate > cv.start_date) or (len(difference_dict) == 0 and newEndDate > cv.start_date):
@@ -115,12 +100,14 @@ def view_update(self):
                                                 time.sleep(1)
                                             else:
                                                 raise ValueError
-                                        except:
-                                            print_profile_date_error()
-                                            time.sleep(2)
-                                            continue
                                         break
-                                elif edit_prop == '3':
+                                    except:
+                                        print_profile_date_error()
+                                        time.sleep(2)
+                                        continue
+
+                                if edit_prop == '3':
+
                                     available_domiciles = []
                                     for d in all_dom:
                                         vcount = 0
