@@ -240,7 +240,7 @@ def print_past_residents(pastVacations, dp):
 
 '''Profile Screens'''
 
-def print_profile_screen(trav_obj):
+def print_profile_screen(trav_obj, my_vacations):
         print(f'''
 
         ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -264,10 +264,9 @@ def print_profile_screen(trav_obj):
                                                                                                 
         ''')
 
-def print_user_vacations(my_vacations):
-    for i, v in enumerate(my_vacations):
+        for i, v in enumerate(my_vacations):
                 print(f"                                        {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
-    print('')
+        print('')
 
 def print_no_vacations():
     print('''
@@ -290,6 +289,68 @@ def print_edit_choice():
     
     ''')
 
+def print_vacation_editing(cv):
+    print(f'''                     
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
+
+                                                        Currently Editing Vacation:
+
+                                                    ><><><><><><><><><><><><><><><><><
+
+                                                            {cv.domicile.name}
+                                                            >> {cv.domicile.dest_location} 
+                                                            >> {cv.start_date} - {cv.end_date}
+
+                                                    ><><><><><><><><><><><><><><><><><                             
+    ''')
+
+    return input('''                             
+                            To update this vacation, type 'U', to delete this vacation, type 'D', to leave type 'X': 
+    ''')
+
+def print_edit_options():
+    return input('''
+                                                    ><><><><><><><><><><><><><><><><><
+
+
+                              Enter 1 to edit the start date, 2 to edit the end date, or 3 to edit the property:
+
+    ''')
+
+def print_other_reservations(vac_by_cvd, cv, edit_prop):
+    print('''
+
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
+
+                                        This location currently has other reservations during: 
+                                        
+                                                    ><><><><><><><><><><><><><><><><><
+                                        ''')
+
+    for v in vac_by_cvd:
+        if v.id == cv.id:
+            print(f'''
+                                                    ><><><><><><><><><><><><><><><><><                               
+                                                        {v.start_date} to {v.end_date}   ⟸ Current Vacation''')
+        else:
+            print(f'''
+                                                    ><><><><><><><><><><><><><><><><><
+                                                        {v.start_date} to {v.end_date}''')
+        print('''
+                                                    ><><><><><><><><><><><><><><><><><
+        ''')
+    return input(f'''
+                                            Please enter your new {'start date' if edit_prop == 1 else 'end date'} or x to exit: 
+    ''')
+
+def print_new_date(newDate, edit_prop):
+    print(f'''
+                                                ><><><><><><><><><><><><><><><><><><><><><><
+                                                    Here is your new {'start date' if edit_prop == 1 else 'end date'}: {newDate}
+                                                ><><><><><><><><><><><><><><><><><><><><><><
+                                                    ''')
 
 '''Error Messages'''
 
@@ -332,3 +393,13 @@ def print_profile_selection_error():
                                                         Please make a valid selection!
                                         <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     ''')
+
+def print_profile_date_error():
+    print('''
+    
+                                        <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+                                                        Please enter a valid date!
+                                        <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    ''')
+                                                       
+    
