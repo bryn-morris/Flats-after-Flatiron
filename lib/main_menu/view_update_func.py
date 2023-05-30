@@ -2,8 +2,15 @@ import os
 from db.models import Base, Vacation, Domicile
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from main_menu.function_screen_data import (
+    print_profile_screen,
+    clear_screen,
+    print_no_vacations,
+    print_user_vacations,
+    print_edit_choice,
+    print_profile_selection_error,
+    )
 import os, time, datetime 
-import ipdb
 import sys
 
 engine = create_engine("sqlite:///lib/db/project.db")
@@ -11,32 +18,6 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def print_profile_screen(trav_obj):
-        print(f'''
-
-        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-                                        
-        
-                                                        <><><><><><><><><><><><><><><><><
-                                                                     Profile 
-                                                        ><><><><><><><><><><><><><><><><>
-                                        
-                                                     
-                                                              First Name: {trav_obj.first_name}
-                                                              Last Name: {trav_obj.last_name}
-                                                              Location: {trav_obj.location}
-
-                                                    
-                                                        ><><><><><><><><><><><><><><><><><
-                                                                  Your vacations:
-                                                        ><><><><><><><><><><><><><><><><><
-
-                                                                                                
-        ''')
-
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 def view_update(self):
         clear_screen()
@@ -47,15 +28,11 @@ def view_update(self):
         my_vacations = [v for v in session.query(Vacation).filter(Vacation.Traveler_id == self.trav_obj.id)]
         # my_vacations = [v for v in self.trav_obj.vacations]
         if len(my_vacations) > 0:
-            for i, v in enumerate(my_vacations):
-                print(f"                                        {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}" )
-            print('')
+            print_user_vacations(my_vacations)
             while True:
                 try:
                     if len(my_vacations) > 1:
-                        print('')
-                        chosen_vaca = input("                                    Type the number of the vacation you'd like to edit/delete, or 'x' to leave!: ")
-                        print('')
+                        chosen_vaca = print_edit_choice()
                         try:
                             if int(chosen_vaca) in range(1, len(my_vacations) + 1):
                                 cv = my_vacations[int(chosen_vaca) - 1]
@@ -64,9 +41,9 @@ def view_update(self):
                             else:
                                 raise ValueError
                         except:
-                            print('                                             Please Enter one of the options provided!')
+                            print_profile_selection_error()
                             time.sleep(2)
-                            num_lines = 4
+                            num_lines = 10
                             sys.stdout.write(f"\033[{num_lines}A")
                             sys.stdout.write(f"\033[{num_lines}M")
                             continue
@@ -308,15 +285,4 @@ def view_update(self):
                 except:
                     continue
         else:
-            print('''
-
-                                                        ><><><><><><><><><><><><><><><><><
-                                                             No vacations booked yet!
-                                                        ><><><><><><><><><><><><><><><><><
-
-
-        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>                                
-
-        
-            ''')
+            print_no_vacations()
