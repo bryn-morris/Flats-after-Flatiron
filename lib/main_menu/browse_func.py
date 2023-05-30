@@ -4,6 +4,14 @@ from db.models import Base, Domicile
 from sqlalchemy.orm import sessionmaker
 from main_menu.color_class import color
 from db.models import Vacation
+from main_menu.function_screen_data import (
+    clear_screen,
+    print_property_page,
+    print_property_details,
+    print_past_residents,
+    print_properties_selection_error,
+    print_properties_number_error,
+)
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Base.metadata.create_all(engine)
@@ -11,123 +19,41 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def browse(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_screen()
         all_dom = session.query(Domicile).all()
         
         while True:
             try:
-                os.system('cls' if os.name == 'nt' else 'clear')
-                print('''
-        
-        ·····························································································································
-        ····················································      Properties    ·····················································
-        ····························································································································· 
-        
-        
-        ''')
-
-                for i, d in enumerate(all_dom):
-                    print(f'''
-                    ········································································································
-                        {i + 1}. {color.BOLD} Property Name: {color.END} {d.name}, {color.BOLD} Property Type: {color.END} {d.property_type}, {color.BOLD} Location: {color.END} {d.dest_location}
-                    ········································································································
-                    ''')
-                
-                detailPropID = input('''
-
-                            For More Details                                                         To Exit 
-                        [[Enter Property Number]]                                                 [[Type 'X']]
-                                            
-        ·····························································································································
-        ·····························································································································                         
-                                ''')
+                clear_screen()
+                detailPropID = print_property_page(all_dom)
                 if detailPropID.lower() == 'x':
                         break
                 if int(detailPropID) in range(1, len(all_dom) + 1):
                         while True:
                             try:
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    
-                                    dp = all_dom[int(detailPropID) - 1]
-                                    print(' ')
+                                clear_screen()
+                                dp = all_dom[int(detailPropID) - 1]
+                                viewPastBookings = print_property_details(dp)
 
-                                    viewPastBookings = input(f''' 
-        ····························································································································· 
-        ················································      Property Details    ···················································
-        ·····························································································································     
-            
-        
-        
-                                    ··································································
-                                    Property Name: {dp.name}
-                                    ··································································
-                                    Property Type: {dp.property_type}
-                                    ··································································
-                                    Location: {dp.dest_location}
-                                    ··································································
-                                    Sleeping Capacity: {dp.sleep_capacity}
-                                    ··································································
-                                    Local Amenities:  {dp.local_amenities}                    
-                                    ··································································
-
-
-            
-                                      See Past Bookings        Return to Properties            To Exit 
-                                        [[Type 'B']]               [[Type 'V']]             [[Type 'X']]
-
-        ····························································································································· 
-        ····························································································································· 
-
-                        ''')
-                                    if (viewPastBookings.lower() == 'x'):
-                                        return
-                                    elif viewPastBookings.lower() == 'v':
-                                        break
-                                    elif viewPastBookings.lower() == 'b':
-                                        while True:
-                                            os.system('cls' if os.name == 'nt' else 'clear')
-                                            # pastVacations = [v for v in all_dom if v.id  == dp.id]
-                                            pastVacations = session.query(Vacation).filter_by(Domicile_id = dp.id)
-                                            print(f'''
-        ·····························································································································
-        ·····························································································································
-
-                            ························································································
-                            ·····················     Past Residents of this Property    ···························
-                            ························································································ 
-                                                                                                
-                            ''')
-                                    
-                                            print(f'                                                            {color.BOLD}  {dp.name}  {color.END}')
-                                            print('                            ························································································')
-                                            for v in pastVacations:
-                                                print(f''' 
-                                    ···········································································
-                                                {v.traveler.first_name.capitalize()} {v.traveler.last_name.capitalize()}
-                                                    Reason for visit: {v.rsn_for_visit}
-                                    ···········································································
-                                                ''')                                  
-                                            exitInput = input('''
-                        
-                                                  Return to Property                        To Exit 
-                                                      [[Type 'V']]                        [[Type 'X']]                             
-                                            
-            ·····························································································································
-            ·····························································································································
-                                ''')
-                                            if exitInput.lower() == 'x':
-                                                 return
-                                            elif exitInput.lower() == 'v':
-                                                 break
-                                    else:
-                                         raise ValueError
-                                
+                                if (viewPastBookings.lower() == 'x'):
+                                    return
+                                elif viewPastBookings.lower() == 'v':
+                                    break
+                                elif viewPastBookings.lower() == 'b':
+                                    while True:
+                                        clear_screen()
+                                        
+                                        pastVacations = session.query(Vacation).filter_by(Domicile_id = dp.id)
+                                        exitInput = print_past_residents(pastVacations, dp)
+                                        
+                                        if exitInput.lower() == 'x':
+                                                return
+                                        elif exitInput.lower() == 'v':
+                                                break
+                                else:
+                                    raise ValueError
                             except:
-                                print('''
-                                ··································································
-                                                Please make a valid selection!
-                                ··································································
-                                ''')
+                                print_properties_selection_error()
                                 time.sleep(1)
                                 continue
                         # This continue is here to send us back to the outer loop from the inner loop
@@ -135,9 +61,6 @@ def browse(self):
                 else:
                     raise ValueError    
             except:
-                print('''
-                        Please make sure to enter a number associated with a property!
-                ''')
+                print_properties_number_error()
                 time.sleep(2)
-                continue 
-            break
+                continue

@@ -1,4 +1,4 @@
-import os, time, sys, datetime 
+import time, sys, datetime 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from db.models import Base, Vacation, Domicile
