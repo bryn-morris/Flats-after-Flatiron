@@ -8,7 +8,7 @@ from main_menu.browse_func import browse
 from main_menu.book_func import book
 from main_menu.color_class import color
 from main_menu.view_update_func import view_update
-from screen_data import (
+from CLI_screen_data import (
     print_main_menu,
     print_greeting, 
     print_navigation_menu, 
