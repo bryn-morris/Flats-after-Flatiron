@@ -2,12 +2,21 @@
 from db.models import Vacation, Traveler, Domicile
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import datetime, os, time, random, ipdb, sys
+import time
 from main_menu.ascii_art import *
 from main_menu.browse_func import browse
 from main_menu.book_func import book
 from main_menu.color_class import color
 from main_menu.view_update_func import view_update
+from screen_data import (
+    print_main_menu,
+    print_greeting, 
+    print_navigation_menu, 
+    clear_screen, 
+    print_opening_screen,
+    print_user_data_request,
+    print_goodbye_screen,
+    tell_the_user_off,)
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Session = sessionmaker(bind=engine)
@@ -21,29 +30,18 @@ class CLI():
         self.first_name = user_fn
         self.last_name = user_ln
         self.city = user_city
-        self.traveler()
+        self.verify_traveler()
 
-        print('''            
-            
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ''')
-        
-        print(f'                         ><><><><><><><><><><><><>    WELCOME {"BACK " if self.comparison_func() else ""}TO FLATS AFTER FLATIRON, {self.trav_obj.first_name.upper()}!   ><><><><><><><><><><><><')
-        
-        print('''
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        print_greeting(self)
 
-        ''')
         time.sleep(3)
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_screen()
         self.start()
 
     def comparison_func(self):
-        
         return any(trav.first_name == self.first_name and trav.last_name == self.last_name for trav in CLI.travelers)
         
-
-    def traveler(self):
+    def verify_traveler(self):
         for t in CLI.travelers:
             if t.first_name == self.first_name and t.last_name == self.last_name and t.location == self.city:
                 self.trav_obj= t
@@ -62,29 +60,8 @@ class CLI():
         exit = False
         while exit == False:
 
-            os.system('cls' if os.name == 'nt' else 'clear')
-            choice = input(f'''
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><>                    <><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><>      Main Menu     ><><><><><><><><><><><><><><><><><><><><><><><><><><
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><>                    <><><><><><><><><><><><><><><><><><><><><><><><><><> 
-    
-
-                                                                       
-                                                         {random.choice(welcome_images)}
-                                                       
-
-                                                           What would you like to do?
-
-
-                                    Book a Vacation            View your Profile             Browse all Properties
-                                      [[Type 'B']]                [[Type 'V']]                    [[Type 'N']]
-
-
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ''')
+            clear_screen()
+            choice = print_main_menu()
             
             if choice.lower() == 'b':
                 book(self)
@@ -93,145 +70,35 @@ class CLI():
             elif choice.lower() == 'n':
                 browse(self)
 
-            user_input = input('''
-             
-                                     vvvvvvvvvvvvvvvvvvvvvvvvvv  Where to Next?  vvvvvvvvvvvvvvvvvvvvvvvvvv
-
-                                                                     ＾ω＾）                                                                   
-                           
-                                        Title Menu                                            Main Menu
-                                       [[Type 'T']]                                          [[Type 'M']]
-                                        
-            ''')
+            user_input = print_navigation_menu()
             time.sleep(1)
             
             if user_input.lower() == 't':
-                os.system('cls' if os.name == 'nt' else 'clear')
+                clear_screen()
                 
                 exit = True
       
-
 if __name__ == '__main__':
     login_counter = 0
     while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('''
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-        
-        
-            
-            
-                                              ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
-                                              ><><><><><><><><><>                         <><><><><><><><><><>
-                                              ><><><><><><><><><>   FLATS AFTER FLATIRON  <><><><><><><><><><>
-                                              ><><><><><><><><><>                         <><><><><><><><><><>
-                                              ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
-
-                                              -----------------------------------------------------------------
-                                                                 Press Enter to get Started
-                                                                        or C to exit       
-                                              -----------------------------------------------------------------
-
-                                              
-
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ''')
+        clear_screen()
+        print_opening_screen()
         time.sleep(1)
         
         user_input = input()
         if user_input == "":
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print(f'''
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-
-            
-                                                 ><><><><><><><><><><><><><><><><><><><><><><><>
-
-            ''')
-            user_fn = input("                                                          Enter Your First Name:     ")
-            print ("")
-            user_ln = input("                                                          Enter Your Last Name:      ")
-            print ("")
-            user_city = input("                                                          Enter Your City Name:      ")
-            print(f''' 
-
-                                                 ><><><><><><><><><><><><><><><><><><><><><><><>
-
-                                                 
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-                                                                           
-            ''', flush = True)
-            
+            clear_screen()            
             time.sleep(1)
+            user_fn, user_ln, user_city = print_user_data_request()
             CLI(user_fn, user_ln, user_city)
         elif(user_input.lower() == "c"):
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print(''' 
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-                
-
-                                                        
-                                          ___                       _    _        _  _             _    
-                                         / __|    ___     ___    __| |  | |__    | || |   ___     | |   
-                                        | (_ |   / _ \   / _ \  / _` |  | '_ \    \_, |  / -_)    |_|   
-                                         \___|   \___/   \___/  \__,_|  |_.__/   _|__/   \___|   _(_)_  
-                                        _|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_| """"|_|"""""|_| """ | 
-                                        "`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-' 
-
-
-                                                                    _--"-.
-                                                                .-"       "-.
-                                                                |""--..      '-.
-                                                                |      ""--..   '-.
-                                                                |.-. .-".    ""--..".
-                                                                |'./  -_'  .-.      |
-                                                                |      .-. '.-'   .-'
-                                                                '--..  '.'    .-  -.
-                                                                     ""--..   '_'   :
-                                                                            ""--..   |
-                                                                                 ""-' mga
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-                
-                ''')
+            clear_screen()
+            print_goodbye_screen()
             break
         else:
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print(f'''
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-
-            
-            
-                                                         
-            
-                                                                      {'ヽ(ಠ_ಠ)ノ'if login_counter == 0 else '( ͠° ͟ʖ ͡° )'}
-
-
-                                            {
-                                            "Press Enter Please! This is an exercise in following directions..."
-                                            if login_counter == 0 else 
-                                            "This REALLY isn't that hard...press" + color.BOLD +  " E.N.T.E.R" + color.END + "..." 
-                                            }
-            
-                                        
-                                                
-
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-            ''')
+            clear_screen()
+            tell_the_user_off(login_counter)
             time.sleep(4)
-            login_counter = 1
+            login_counter += 1
             continue
 

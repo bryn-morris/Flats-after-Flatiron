@@ -1,8 +1,8 @@
-import os, time, sys, ipdb, datetime 
-from datetime import date
+import os, time, sys, datetime 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from db.models import Base, Vacation, Domicile, Traveler
+from db.models import Base, Vacation, Domicile
+from lib.screen_data import print_booking_greeting
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Base.metadata.create_all(engine)
@@ -17,20 +17,7 @@ def book(self):
         while True:
             try:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                start_date = input('''
-                 
-        *****************************************************************************************************************************       
-        **************************************************     Welcome to Booking     ***********************************************
-        *****************************************************************************************************************************
-                                    
-                                                                    To Exit
-                                                                  [[Type 'X']]
-
-                                        ******************************************************************
-                                            When would you like your vacation to start? 
-                                        ******************************************************************
-
-                ''')
+                start_date = print_booking_greeting()
                 if start_date.lower() == 'x':
                     return
                 for date_format in accepted_date_formats:
@@ -189,15 +176,15 @@ def book(self):
                                 rsn_response = input(f'''
                                         ************************************************************************
 
-                                                                *****************
+                                                                    *****************
 
-                                                                Great! Last step!
+                                                                    Great! Last step!
 
-                                                                *****************
+                                                                    *****************
                                             
-                                                  Sign into your vacation by signing the log book!
+                                                    Sign into your vacation by signing the log book!
                                    
-                                                  ************************************************
+                                                    ************************************************
                                 
                                         ········································································
                                             {self.trav_obj.first_name} {self.trav_obj.last_name}

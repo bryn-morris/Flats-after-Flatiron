@@ -4,16 +4,14 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import os, time, datetime 
 import ipdb
+import sys
 
 engine = create_engine("sqlite:///lib/db/project.db")
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def view_update(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
-        all_dom = session.query(Domicile).all()
-        
+def print_profile_screen(trav_obj):
         print(f'''
 
         ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -25,9 +23,9 @@ def view_update(self):
                                                         ><><><><><><><><><><><><><><><><>
                                         
                                                      
-                                                              First Name: {self.trav_obj.first_name}
-                                                              Last Name: {self.trav_obj.last_name}
-                                                              Location: {self.trav_obj.location}
+                                                              First Name: {trav_obj.first_name}
+                                                              Last Name: {trav_obj.last_name}
+                                                              Location: {trav_obj.location}
 
                                                     
                                                         ><><><><><><><><><><><><><><><><><
@@ -36,9 +34,16 @@ def view_update(self):
 
                                                                                                 
         ''')
-        #Do I need to query within this session context? - self.trav_obj.id filter 
-        # Check line 82, querying using session may be causing the problem as trav obj was queried
-        # within a different session context in CLI
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def view_update(self):
+        clear_screen()
+        all_dom = session.query(Domicile).all()
+        
+        print_profile_screen(self.trav_obj)
+
         my_vacations = [v for v in session.query(Vacation).filter(Vacation.Traveler_id == self.trav_obj.id)]
         # my_vacations = [v for v in self.trav_obj.vacations]
         if len(my_vacations) > 0:
@@ -49,16 +54,28 @@ def view_update(self):
                 try:
                     if len(my_vacations) > 1:
                         print('')
-                        chosen_vaca = input("                                        Type the number of the vacation you'd like to edit/delete: ")
+                        chosen_vaca = input("                                    Type the number of the vacation you'd like to edit/delete, or 'x' to leave!: ")
                         print('')
+                        try:
+                            if int(chosen_vaca) in range(1, len(my_vacations) + 1):
+                                cv = my_vacations[int(chosen_vaca) - 1]
+                            elif chosen_vaca.lower() == 'x':
+                                return
+                            else:
+                                raise ValueError
+                        except:
+                            print('                                             Please Enter one of the options provided!')
+                            time.sleep(2)
+                            num_lines = 4
+                            sys.stdout.write(f"\033[{num_lines}A")
+                            sys.stdout.write(f"\033[{num_lines}M")
+                            continue
 
-                        if int(chosen_vaca) in range(1, len(my_vacations) + 1):
-                            cv = my_vacations[int(chosen_vaca) - 1]
-                            
                     elif len(my_vacations) == 1:
                         
                         cv = my_vacations[0]
-                    os.system('cls' if os.name == 'nt' else 'clear')    
+                        time.sleep(2)
+                    clear_screen()  
                     print(f'''                     
                                                     ><><><><><><><><><><><><><><><><><
 
@@ -66,7 +83,7 @@ def view_update(self):
                                                         
                                                         ''')
 
-                    update_action = input("                                     To update this vacation, type 'U', to delete this vacation, type 'D': ")
+                    update_action = input("                            To update this vacation, type 'U', to delete this vacation, type 'D', to leave type 'X': ")
 
                     print('')
                     if update_action.lower() == 'u':
@@ -75,7 +92,7 @@ def view_update(self):
                         date_format = '%Y-%m-%d'
                         if edit_prop == '1':
                             while True:
-                                os.system('cls' if os.name == 'nt' else 'clear')
+                                clear_screen()
                                 try:
                                     vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.start_date)
                                     print("")
@@ -146,7 +163,7 @@ def view_update(self):
                         elif edit_prop == '2':
                             while True:
                                 try:
-                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    clear_screen()
                                     vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date)
                                     print("")
                                     print("                                             This location currently has other reservations during: ")
@@ -223,7 +240,7 @@ def view_update(self):
                                     available_domiciles.append(d)
                             while True:
                                 try:
-                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    clear_screen()
                                     print('''                   
 
 
@@ -264,7 +281,7 @@ def view_update(self):
                         print('')
                         print('                                Vacation deleted successfully!')
                         time.sleep(3)
-                        os.system('cls' if os.name == 'nt' else 'clear')
+                        clear_screen()
                         print('''                                
                                                                 Your vacations:
                                                 ><><><><><><><><><><><><><><><><><><><><><><
@@ -283,13 +300,15 @@ def view_update(self):
                                                     No vacations booked yet!
                             ''')
                             time.sleep(3)
+                    elif update_action.lower() == 'x':
+                        break
                     else:
                         raise ValueError
                     break
                 except:
                     continue
         else:
-            print(''')
+            print('''
 
                                                         ><><><><><><><><><><><><><><><><><
                                                              No vacations booked yet!
