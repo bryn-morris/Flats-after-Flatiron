@@ -13,7 +13,7 @@ from main_menu.function_screen_data import (
     print_other_reservations,
     print_new_date,
     print_profile_date_error,
-    print_avaliable_properties,
+    print_update_avaliable_properties,
     print_property_change_confirm,
     print_property_change_error,
     print_deletion_confirmation,
@@ -43,7 +43,7 @@ def view_update(self):
                             if int(chosen_vaca) in range(1, len(my_vacations) + 1):
                                 cv = my_vacations[int(chosen_vaca) - 1]
                             elif chosen_vaca.lower() == 'x':
-                                return
+                                break
                             else:
                                 raise ValueError
                         except:
@@ -129,7 +129,7 @@ def view_update(self):
                                     while True:
                                         try:
                                             clear_screen() 
-                                            new_dom =  print_avaliable_properties(available_domiciles)
+                                            new_dom =  print_update_avaliable_properties(available_domiciles)
                                             dom_pre_change = tuple([d for d in all_dom if d.id == cv.Domicile_id])
 
                                             if int(new_dom) in range(1, len(available_domiciles)+1):

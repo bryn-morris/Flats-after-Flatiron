@@ -1,8 +1,7 @@
-import os, ipdb, time
+import time
 from sqlalchemy import create_engine
 from db.models import Base, Domicile
 from sqlalchemy.orm import sessionmaker
-from main_menu.color_class import color
 from db.models import Vacation
 from main_menu.function_screen_data import (
     clear_screen,

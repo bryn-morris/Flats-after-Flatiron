@@ -10,7 +10,7 @@ from main_menu.function_screen_data import (
     print_user_end_date_input,
     print_bottom_booking_screen,
     print_avaliable_properties,
-    print_property_details,
+    print_book_property_details,
     print_booking_signature,
     print_bottom_of_signature,
     print_booking_verification,
@@ -66,6 +66,7 @@ def book(self):
                 else:
                     endDate = testEndDate
                 print_bottom_booking_screen()
+                time.sleep(2)
             except:
                 print_user_date_error()
                 time.sleep(1)
@@ -75,7 +76,7 @@ def book(self):
                 continue
             else:
                 break
-
+        
         filtered_domiciles = []
         for d in session.query(Domicile).all():
             vcount = 0
@@ -88,10 +89,13 @@ def book(self):
                         vcount += 1
             if vcount == len(d.vacations):
                 filtered_domiciles.append(d)
+
         while True:
             try:
                 clear_screen()
+        
                 propID = print_avaliable_properties(startDate, endDate, filtered_domiciles)
+                
                 if propID.lower() == "x":
                     break
                 elif int(propID) in range(1, len(filtered_domiciles)+1):
@@ -99,7 +103,7 @@ def book(self):
                         try:
                             dp = filtered_domiciles[int(propID) - 1]
                             clear_screen()
-                            book_prop = print_property_details(dp)
+                            book_prop = print_book_property_details(dp)
                             if book_prop.lower() == 'z':
                                 break
                             elif book_prop.lower() not in ['z','b']:

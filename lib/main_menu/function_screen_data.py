@@ -1,4 +1,4 @@
-import os
+import os, ipdb
 from main_menu.color_class import color
 
 '''Booking Screens'''
@@ -45,7 +45,7 @@ def print_bottom_booking_screen():
     ''')
 
 def print_avaliable_properties(startDate, endDate, filtered_domiciles):
-
+    
     print(f'''
 
         *****************************************************************************************************************************       
@@ -61,13 +61,14 @@ def print_avaliable_properties(startDate, endDate, filtered_domiciles):
                                         ****************************************************************** 
                      
     ''')
+    
     for i, d in enumerate(filtered_domiciles):
         print(f'''
                                         ****************************************************************** 
                                             {i + 1}. {d.name} in {d.dest_location}
                                         ****************************************************************** 
         ''')
-                
+               
     return input('''
 
                                 For More Details                                                        To Exit 
@@ -77,7 +78,7 @@ def print_avaliable_properties(startDate, endDate, filtered_domiciles):
         *****************************************************************************************************************************
                 ''')
 
-def print_property_details(dp):
+def print_book_property_details(dp):
     return input(f'''
 
             *****************************************************************************************************************************       
@@ -359,7 +360,7 @@ def print_new_date(newDate, edit_prop):
         ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
                                                     ''')
 
-def print_avaliable_properties(available_domiciles):
+def print_update_avaliable_properties(available_domiciles):
 
     print('''                   
 
@@ -402,6 +403,9 @@ def print_deletion_confirmation():
                                                       Vacation deleted successfully!
                                                     
                                                     ><><><><><><><><><><><><><><><><><
+
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     ''')
 
 def print_other_bookings(new_vacations):
