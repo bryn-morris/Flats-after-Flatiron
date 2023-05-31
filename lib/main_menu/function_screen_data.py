@@ -332,11 +332,13 @@ def print_other_reservations(vac_by_cvd, cv, edit_prop):
     for v in vac_by_cvd:
         if v.id == cv.id:
             print(f'''
-                                                    ><><><><><><><><><><><><><><><><><                               
+                                                    ><><><><><><><><><><><><><><><><><
+
                                                         {v.start_date} to {v.end_date}   ⟸ Current Vacation''')
         else:
             print(f'''
                                                     ><><><><><><><><><><><><><><><><><
+
                                                         {v.start_date} to {v.end_date}''')
         print('''
                                                     ><><><><><><><><><><><><><><><><><
@@ -347,10 +349,79 @@ def print_other_reservations(vac_by_cvd, cv, edit_prop):
 
 def print_new_date(newDate, edit_prop):
     print(f'''
-                                                ><><><><><><><><><><><><><><><><><><><><><><
-                                                    Here is your new {'start date' if edit_prop == 1 else 'end date'}: {newDate}
-                                                ><><><><><><><><><><><><><><><><><><><><><><
+                                              ><><><><><><><><><><><><><><><><><><><><><><
+
+                                                  Here is your new {'start date' if edit_prop == 1 else 'end date'}: {newDate}
+
+                                              ><><><><><><><><><><><><><><><><><><><><><><
+        
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
                                                     ''')
+
+def print_avaliable_properties(available_domiciles):
+
+    print('''                   
+
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
+
+                                                             Available Properties:
+
+    ''')
+
+    for i, d in enumerate(available_domiciles):
+        print(f'''                                
+                                    --------------------------------------------------------------------------
+                                    {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}
+                                    --------------------------------------------------------------------------
+        ''')
+
+    return input('''
+                                                        ><><><><><><><><><><><><><><><><><
+
+                                        Please enter the number of the property you would like to switch to: 
+
+                                                        ><><><><><><><><><><><><><><><><><
+    ''')
+
+def print_property_change_confirm(dom_pre_change, new_property):
+
+    print(f'''             
+                        Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}
+        
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+    ''')
+
+def print_deletion_confirmation():
+
+    print('''
+                                                    ><><><><><><><><><><><><><><><><><
+
+                                                      Vacation deleted successfully!
+                                                    
+                                                    ><><><><><><><><><><><><><><><><><
+    ''')
+
+def print_other_bookings(new_vacations):
+    print('''             
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+        ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
+
+                                                                Your Booked vacations:
+                                                    ><><><><><><><><><><><><><><><><><><><><><><
+    ''')
+                        
+    if len(new_vacations) > 0:
+        for i, v in enumerate(new_vacations):
+            print(f'''
+                                      --------------------------------------------------------------------------
+                                            {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}
+                                      --------------------------------------------------------------------------
+             ''')
+    else:
+        print_no_vacations()
 
 '''Error Messages'''
 
@@ -402,4 +473,11 @@ def print_profile_date_error():
                                         <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
     ''')
                                                        
-    
+def print_property_change_error():
+
+     print('''                                          ><><><><><><><><><><><><><><><><><
+                                            
+                                        Please make sure to enter one of the numbers associated with a property!
+                                                        
+                                                        ><><><><><><><><><><><><><><><><><
+    ''')

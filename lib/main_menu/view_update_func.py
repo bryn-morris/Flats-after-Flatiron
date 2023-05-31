@@ -13,6 +13,11 @@ from main_menu.function_screen_data import (
     print_other_reservations,
     print_new_date,
     print_profile_date_error,
+    print_avaliable_properties,
+    print_property_change_confirm,
+    print_property_change_error,
+    print_deletion_confirmation,
+    print_other_bookings,
     )
 import os, time, datetime
 
@@ -61,6 +66,9 @@ def view_update(self):
                                 edit_prop = print_edit_options()
                                 date_format = '%Y-%m-%d'
                                 vac_by_cvd = session.query(Vacation).filter(Vacation.Domicile_id == cv.Domicile_id).order_by(Vacation.end_date)
+              
+                                if int(edit_prop) not in range(1,4):
+                                    raise ValueError
 
                                 while True:
                                     clear_screen()
@@ -101,6 +109,7 @@ def view_update(self):
                                             else:
                                                 raise ValueError
                                         break
+
                                     except:
                                         print_profile_date_error()
                                         time.sleep(2)
@@ -112,32 +121,15 @@ def view_update(self):
                                     for d in all_dom:
                                         vcount = 0
                                         for v in d.vacations:
-                                            if (cv.start_date < v.start_date):
-                                                if (cv.end_date < v.start_date):
-                                                    vcount += 1
-                                            elif (cv.end_date > v.end_date):
-                                                if(cv.start_date > v.end_date):
-                                                    vcount += 1
+                                            if (cv.start_date < v.start_date and cv.end_date < v.start_date) or (cv.end_date > v.end_date and cv.start_date > v.end_date):
+                                                vcount += 1
                                         if vcount == len(d.vacations):
                                             available_domiciles.append(d)
+
                                     while True:
                                         try:
-                                            clear_screen()
-                                            print('''                   
-
-
-                                                                        Available Properties:
-                                        
-                                            ''')
-                                            for i, d in enumerate(available_domiciles):
-                                                print(f'''                                
-                                            --------------------------------------------------------------------------
-                                            {i + 1}. Property Name: {d.name}, Property Type: {d.property_type}, Location: {d.dest_location}
-                                            --------------------------------------------------------------------------
-                                                ''') 
-                                            new_dom = input('''
-                                                Please enter the number of the property you would like to switch to: 
-                                            ''')
+                                            clear_screen() 
+                                            new_dom =  print_avaliable_properties(available_domiciles)
                                             dom_pre_change = tuple([d for d in all_dom if d.id == cv.Domicile_id])
 
                                             if int(new_dom) in range(1, len(available_domiciles)+1):
@@ -146,18 +138,13 @@ def view_update(self):
                                                 cv.name = new_property.name
                                                 session.commit()
 
-                                                print(f"                                Congrats! Property changed from {dom_pre_change[0].name} in {dom_pre_change[0].dest_location} to {new_property.name} in {new_property.dest_location}")
+                                                print_property_change_confirm(dom_pre_change, new_property)
                                                 break
                                         except:
-                                            print('''
-                                            
-                                                                                Please make sure to enter one of the numbers associated with a property!
-                                            
-                                            ''')
+                                            print_property_change_error()
                                             time.sleep(2)
                                             continue
-                                else:
-                                    raise ValueError
+
                             except:
                                 print_profile_selection_error()
                                 time.sleep(2)
@@ -170,35 +157,17 @@ def view_update(self):
                     elif update_action.lower() == 'd': 
                         session.delete(cv)
                         session.commit()
-                        print('')
-                        print('                                Vacation deleted successfully!')
+                        print_deletion_confirmation()
                         time.sleep(3)
                         clear_screen()
-                        print('''                                
-                                                                Your vacations:
-                                                ><><><><><><><><><><><><><><><><><><><><><><
-                        ''')
                         new_vacations = [v for v in self.trav_obj.vacations]
-                        if len(new_vacations) > 0:
-                            for i, v in enumerate(new_vacations):
-                                print(f'''
-                                    --------------------------------------------------------------------------
-                                            {i + 1}. {v.domicile.name}, in {v.domicile.dest_location} from {v.start_date} - {v.end_date}
-                                    --------------------------------------------------------------------------
-                                ''')
-                            
-                        else:
-                            print('''
-                                                    No vacations booked yet!
-                            ''')
-                            time.sleep(3)
+                        print_other_bookings(new_vacations)
                     elif update_action.lower() == 'x':
                         break
                     else:
                         raise ValueError
                     break
                 except:
-                    print('Is this broken?')
                     continue
         else:
             print_no_vacations()
