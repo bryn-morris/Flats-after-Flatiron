@@ -36,6 +36,13 @@ def print_user_end_date_input():
                                         ******************************************************************
         ''')
 
+def print_user_end_date(endDate):
+    print(f'''
+                                        ******************************************************************
+                                                        Here is your end date: {endDate}
+                                        ******************************************************************
+    ''')
+
 def print_bottom_booking_screen():
     print(f'''
 
@@ -459,7 +466,9 @@ def print_properties_selection_error():
 
 def print_properties_number_error():
     print('''
-                        Please make sure to enter a number associated with a property!
+                                ··································································
+                                  Please make sure to enter a number associated with a property!
+                                ··································································
     ''')
 
 def print_profile_selection_error():

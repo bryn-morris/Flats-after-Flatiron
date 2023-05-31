@@ -12,7 +12,6 @@ The program allows a user to "log in" to Flats After FlatIron and manage their t
 1. Browsing available destinations
 2. Booking a travel reservation
 3. Managing & Deleting current reservation information
-4. Update user's "profile" information
 
 ### Languages
 

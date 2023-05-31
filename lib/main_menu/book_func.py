@@ -7,6 +7,7 @@ from main_menu.function_screen_data import (
     print_user_start_date,
     print_user_date_error,
     clear_screen,
+    print_user_end_date,
     print_user_end_date_input,
     print_bottom_booking_screen,
     print_avaliable_properties,
@@ -65,6 +66,7 @@ def book(self):
                     raise ValueError
                 else:
                     endDate = testEndDate
+                print_user_end_date(endDate)
                 print_bottom_booking_screen()
                 time.sleep(2)
             except:

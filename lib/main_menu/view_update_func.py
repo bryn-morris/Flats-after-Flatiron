@@ -32,9 +32,9 @@ def view_update(self):
         
         my_vacations = [v for v in session.query(Vacation).filter(Vacation.Traveler_id == self.trav_obj.id)]
         # my_vacations = [v for v in self.trav_obj.vacations]
+        clear_screen()
         if len(my_vacations) > 0:
             while True:
-                clear_screen()
                 print_profile_screen(self.trav_obj, my_vacations)
                 try:
                     if len(my_vacations) > 1:
@@ -170,4 +170,5 @@ def view_update(self):
                 except:
                     continue
         else:
+            print_profile_screen(self.trav_obj, my_vacations)
             print_no_vacations()
