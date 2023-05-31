@@ -19,6 +19,12 @@ Linux - Ubuntu
 Python
 SQLAlchemy
 
+### [Demo Link](https://www.loom.com/share/c01a42e3057a476794ac60849e065fff)
+
+### ScreenShots
+
+#### [ScreenShot 1](lib/images/titlescreen.png) || [ScreenShot 2](lib/images/profilescreen.png) || [ScreenShot 3](lib/images/bookavaliableproperty.png) || [ScreenShot 4](lib/images/propertybooked.png) || [ScreenShot 5](lib/images/propertiestab.png) ||
+
 ## Collaborators: 
 
 #### [Bryn Morris](https://github.com/bryn-morris)

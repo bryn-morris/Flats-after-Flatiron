@@ -79,11 +79,10 @@ def view_update(self):
                                             new_start_date = print_other_reservations(vac_by_cvd, cv, edit_prop)
                                             if new_start_date.lower() == "x":
                                                 break
-
+                                            
                                             newStartDate = datetime.datetime.strptime(new_start_date, date_format).date()
-                                            
+
                                             difference_dict = {date: (date-cv.start_date).days for date in [v.end_date for v in vac_by_cvd] if (date-cv.start_date).days <= 0}
-                                            
                                             closest_end_date = max(difference_dict, key = lambda val: difference_dict[val])
                                             
                                             if (len(difference_dict) > 0 and closest_end_date < newStartDate < cv.end_date) or (len(difference_dict) == 0 and newStartDate < cv.end_date):
