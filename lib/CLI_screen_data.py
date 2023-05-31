@@ -49,12 +49,12 @@ def print_greeting(self):
 def print_navigation_menu():
     return input('''
              
-                                     vvvvvvvvvvvvvvvvvvvvvvvvvv  Where to Next?  vvvvvvvvvvvvvvvvvvvvvvvvvv
+                                        vvvvvvvvvvvvvvvvvvvvvvvvvv  Where to Next?  vvvvvvvvvvvvvvvvvvvvvvvvvv
 
-                                                                     ＾ω＾）                                                                   
+                                                                         ＾ω＾）                                                                   
                            
-                                        Title Menu                                            Main Menu
-                                       [[Type 'T']]                                          [[Type 'M']]
+                                            Title Menu                                            Main Menu
+                                           [[Type 'T']]                                          [[Type 'M']]
                                         
             ''')
 

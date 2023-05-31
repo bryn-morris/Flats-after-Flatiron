@@ -352,14 +352,14 @@ def print_other_reservations(vac_by_cvd, cv, edit_prop):
                                                     ><><><><><><><><><><><><><><><><><
         ''')
     return input(f'''
-                                            Please enter your new {'start date' if edit_prop == 1 else 'end date'} or x to exit: 
+                                            Please enter your new {'start date' if edit_prop == str(1) else 'end date'} or x to exit: 
     ''')
 
 def print_new_date(newDate, edit_prop):
     print(f'''
                                               ><><><><><><><><><><><><><><><><><><><><><><
 
-                                                  Here is your new {'start date' if edit_prop == 1 else 'end date'}: {newDate}
+                                                  Here is your new {'start date' if edit_prop == str(1) else 'end date'}: {newDate}
 
                                               ><><><><><><><><><><><><><><><><><><><><><><
         
@@ -421,6 +421,7 @@ def print_other_bookings(new_vacations):
         ><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><> 
 
                                                                 Your Booked vacations:
+
                                                     ><><><><><><><><><><><><><><><><><><><><><><
     ''')
                         

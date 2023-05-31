@@ -28,10 +28,9 @@ def book(self):
         clear_screen()
         date_format = '%Y-%m-%d'
         accepted_date_formats = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%d-%b-%Y', '%d %B %Y']
-
+        
         while True:
             try:
-                clear_screen()
                 start_date = print_booking_greeting()
                 if start_date.lower() == 'x':
                     return
