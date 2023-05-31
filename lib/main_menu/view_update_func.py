@@ -40,10 +40,10 @@ def view_update(self):
                     if len(my_vacations) > 1:
                         chosen_vaca = print_edit_choice()
                         try:
-                            if int(chosen_vaca) in range(1, len(my_vacations) + 1):
-                                cv = my_vacations[int(chosen_vaca) - 1]
-                            elif chosen_vaca.lower() == 'x':
+                            if chosen_vaca.lower() == 'x':
                                 break
+                            elif int(chosen_vaca) in range(1, len(my_vacations) + 1):
+                                cv = my_vacations[int(chosen_vaca) - 1]
                             else:
                                 raise ValueError
                         except:
