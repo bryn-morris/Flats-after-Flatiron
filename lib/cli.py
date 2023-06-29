@@ -21,7 +21,7 @@ from CLI_screen_data import (
 engine = create_engine("sqlite:///lib/db/project.db")
 Session = sessionmaker(bind=engine)
 session = Session()
-
+ 
 class CLI():
 
     travelers = [traveler for traveler in session.query(Traveler)]
